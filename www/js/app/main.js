@@ -4,10 +4,12 @@
 define(function (require) {
     var queryNode, socket,
         captureTimeoutId = 0,
-        io = require('socket.io');
+        io = require('socket.io'),
+        socketUrl = location.hash.indexOf('dev') === -1 ?
+                    'http://immense-reef-2130.herokuapp.com' :
+                    'http://127.0.0.1:5000';
 
-    //socket = io.connect('http://immense-reef-2130.herokuapp.com');
-    socket = io.connect('http://127.0.0.1:5000');
+    socket = io.connect(socketUrl);
 
     socket.on('api/suggested', function (data) {
         console.log('GOT api/suggested: ', data);
