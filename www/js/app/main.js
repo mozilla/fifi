@@ -9,6 +9,8 @@ define(function (require) {
                     'http://immense-reef-2130.herokuapp.com' :
                     'http://127.0.0.1:5000';
 
+    console.log('Using server: ' + socketUrl);
+
     socket = io.connect(socketUrl);
 
     socket.on('api/suggested', function (data) {

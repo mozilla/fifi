@@ -1,3 +1,20 @@
+# Fifi Front End
+
+## Installation
+
+* Clone this repo
+
+## Development
+
+To start up the UI, open **www/index.html** in a web browser.
+
+By default, it will try to connect to the Heroku installation of fifiback,
+but if you append `#dev` to the URL, it will connect to your local fifiback.
+
+Check the console.log, it will print the server the front end is using.
+
+## Directory layout
+
 This web project has the following setup:
 
 * www/ - the web assets for the project
@@ -17,9 +34,3 @@ This will run the "build" command in the volofile that is in this directory.
 That build command creates an optimized version of the project in a
 **www-built** directory. The js/app.js file will be optimized to include
 all of its dependencies.
-
-For more information on the optimizer:
-http://requirejs.org/docs/optimization.html
-
-For more information on using requirejs:
-http://requirejs.org/docs/api.html
