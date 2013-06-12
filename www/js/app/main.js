@@ -5,6 +5,7 @@ define(function (require) {
   var queryNode, socket,
     captureTimeoutId = 0,
     io = require('socket.io'),
+    events = require('events'),
     socketUrl = location.hash.indexOf('dev') === -1 ?
           'http://immense-reef-2130.herokuapp.com' :
           'http://127.0.0.1:5000';
@@ -13,8 +14,14 @@ define(function (require) {
 
   socket = io.connect(socketUrl);
 
-  socket.on('api/suggested', function (data) {
-    console.log('GOT api/suggested: ', data);
+  socket.on('api/suggestDone', function (data) {
+    console.log('GOT api/suggestDone: ', data);
+    events.emit('api/suggestDone', data);
+  });
+
+  socket.on('api/queryDone', function (data) {
+    console.log('GOT api/queryDone: ', data);
+    events.emit('api/queryDone', data);
   });
 
   function capture() {
@@ -23,7 +30,7 @@ define(function (require) {
 
     if (term) {
       console.log('term is: ' + term);
-      socket.emit('api/suggest', { term: term });
+      socket.emit('api/find', { term: term });
     }
   }
 
