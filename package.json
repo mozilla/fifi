@@ -1,6 +1,9 @@
 {
   "amd": {},
   "volo": {
-    "baseUrl": "www/js/lib"
+    "baseUrl": "www/js/lib",
+    "dependencies": {
+      "socket.io": "github:LearnBoost/socket.io-client/0.9.16#dist/socket.io.js"
+    }
   }
 }
