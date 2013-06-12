@@ -4,15 +4,15 @@
 // except for 'app' ones, which are in a sibling
 // directory.
 requirejs.config({
-    baseUrl: 'js/lib',
-    paths: {
-        app: '../app'
-    },
-    shim: {
-        'socket.io': {
-            exports: 'io'
-        }
+  baseUrl: 'js/lib',
+  paths: {
+    app: '../app'
+  },
+  shim: {
+    'socket.io': {
+      exports: 'io'
     }
+  }
 });
 
 // Start loading the main app file. Put all of
