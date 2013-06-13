@@ -16,12 +16,12 @@ define(function (require) {
 
   socket.on('api/suggestDone', function (data) {
     console.log('GOT api/suggestDone: ', data);
-    events.emit('api/suggestDone', data);
+    events.emit('api/suggestDone/' + data.engineId, data);
   });
 
   socket.on('api/queryDone', function (data) {
     console.log('GOT api/queryDone: ', data);
-    events.emit('api/queryDone', data);
+    events.emit('api/queryDone/' + data.engineId, data);
   });
 
   function capture() {
@@ -42,6 +42,17 @@ define(function (require) {
         captureTimeoutId = setTimeout(capture, 300);
       }
     }, false);
+
+    // Create tags.
+    var nodes = Array.slice(document.getElementsByTagName('body')[0].querySelectorAll('*'), 0);
+    nodes.forEach(function (node) {
+      var name = node.nodeName.toLowerCase();
+      if (name.indexOf('fifi-') === 0) {
+        require([name.replace(/-/g, '/')], function (Element) {
+          new Element(node);
+        });
+      }
+    });
   }
 
   if (document.readyState === 'complete') {

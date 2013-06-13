@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script data-main="js/app" src="js/lib/alameda.js"></script>
+    <script data-main="app" src="lib/alameda.js"></script>
   </head>
   <body>
     <h1>Hello World</h1>
     <input class="query" placeholder="type a query">
-    <fifi-def></fifi-def>
-    <fifi-suggest></fifi-suggest>
+    <fifi-suggest data-engineid="google.com"></fifi-suggest>
+    <fifi-def data-engineid="en.wikipedia.org"></fifi-def>
   </body>
 </html>

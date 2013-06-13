@@ -4,9 +4,10 @@
 // except for 'app' ones, which are in a sibling
 // directory.
 requirejs.config({
-  baseUrl: 'js/lib',
+  baseUrl: 'lib',
   paths: {
-    app: '../app'
+    app: '../app',
+    fifi: '../app/fifi'
   },
   shim: {
     'socket.io': {
