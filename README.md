@@ -24,6 +24,8 @@ Still need to sort the wikipedia thing. Got further with these links:
 http://www.mediawiki.org/wiki/API
 http://www.mediawiki.org/wiki/API:Query_-_Properties
 
+Wolfram alpha:
+http://products.wolframalpha.com/api/documentation.html
 
 ## Directory layout
 
