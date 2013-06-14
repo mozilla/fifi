@@ -17,6 +17,14 @@ To see the topcoat style guide open:
 
     www/lib/topcoat-0.4.1/docs/styleguide/topcoat-mobile-light.html
 
+## API stuff
+
+Still need to sort the wikipedia thing. Got further with these links:
+
+http://www.mediawiki.org/wiki/API
+http://www.mediawiki.org/wiki/API:Query_-_Properties
+
+
 ## Directory layout
 
 This web project has the following setup:
