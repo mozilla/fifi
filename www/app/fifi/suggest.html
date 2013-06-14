@@ -1,8 +1,15 @@
-<div class="fifi-suggest">
-  <b>{{main}}</b>
-  <ul>
+<div class="fifi-suggest {{#main}}topcoat-list__container{{/main}}">
+  {{#main}}
+  <h3 class="topcoat-list__header">{{main}}</h3>
+  {{/main}}
+
   {{#others}}
-    {{.}}
-  {{/others}}
+  <ul class="topcoat-list">
+    {{#list}}
+      <li class="topcoat-list__item" data-term="{{.}}">
+        {{.}}
+      </li>
+    {{/list}}
   </ul>
+  {{/others}}
 </div>

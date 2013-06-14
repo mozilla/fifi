@@ -34,6 +34,11 @@ define(function (require) {
 
   Element.prototype = {
     render: function () {
+      // Skip if no template associated, just binds to existing HTML
+      if (!this.template) {
+        return;
+      }
+
       var newNode,
           html = this.template(this.data);
 
@@ -48,6 +53,27 @@ define(function (require) {
     }
   };
 
+  // init function that converts elements to components.
+  function init() {
+    // Create tags.
+    var nodes = Array.slice(document.getElementsByTagName('body')[0].querySelectorAll('*'), 0);
+    nodes.forEach(function (node) {
+      var name = node.nodeName.toLowerCase();
+      if (name.indexOf('fifi-') === 0) {
+        require([name.replace(/-/g, '/')], function (Element) {
+          new Element(node);
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    setTimeout(init);
+  } else {
+    document.addEventListener('DOMContentLoaded', init, false);
+  }
+
+  // Creates an element constructor. Used by "subclasses".
   return function makeElement(obj) {
     function Ctor() {
       if (!this.on) {

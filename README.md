@@ -13,6 +13,10 @@ but if you append `#dev` to the URL, it will connect to your local fifiback.
 
 Check the console.log, it will print the server the front end is using.
 
+To see the topcoat style guide open:
+
+    www/lib/topcoat-0.4.1/docs/styleguide/topcoat-mobile-light.html
+
 ## Directory layout
 
 This web project has the following setup:

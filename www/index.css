@@ -1,0 +1,19 @@
+@import url(lib/topcoat-0.4.1/release/css/topcoat-mobile-light.css);
+
+* {
+  box-sizing: border-box;
+}
+
+.fifi-find {
+  width: 50%;
+}
+
+.fifi-suggest {
+  float: left;
+  width: 50%;
+}
+
+.fifi-def {
+  float: right;
+  width: 50%;
+}

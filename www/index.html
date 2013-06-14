@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="index.css">
     <script data-main="app" src="lib/alameda.js"></script>
   </head>
   <body>
-    <h1>Hello World</h1>
-    <input class="query" placeholder="type a query">
+    <div class="find-container">
+        <fifi-find></fifi-find>
+    </div>
+
     <fifi-suggest data-engineid="google.com"></fifi-suggest>
     <fifi-def data-engineid="en.wikipedia.org"></fifi-def>
   </body>

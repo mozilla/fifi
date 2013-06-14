@@ -5,7 +5,30 @@ define(function (require) {
     constructor: function (node) {
         var id = node.dataset.engineid;
         this.on['api/queryDone' + (id ? '/' + id : '')] = function (data) {
-          this.data = data.result;
+
+
+          // This assumes wikipedia data at the moment
+          var key,
+              query = data.result.query,
+              value = query && query.pages;
+
+          this.data = {};
+
+          if (value) {
+            key = Object.keys(value)[0];
+            if (key) {
+              value = value[key];
+              value = value.revisions &&
+                      value.revisions[0] &&
+                      value.revisions[0]['*'];
+              if (value) {
+                this.data = {
+                  html: value
+                };
+              }
+            }
+          }
+
           this.render();
         };;
     }
