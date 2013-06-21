@@ -17,6 +17,9 @@ To see the topcoat style guide open:
 
     www/lib/topcoat-0.4.1/docs/styleguide/topcoat-mobile-light.html
 
+Useful ref:
+https://github.com/clarkbw/searchspot/blob/master/lib/search-engines.js
+
 ## API stuff
 
 Still need to sort the wikipedia thing. Got further with these links:
