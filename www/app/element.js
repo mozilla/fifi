@@ -3,7 +3,8 @@
 
 define(function (require) {
   var events = require('events'),
-      tempNode = document.createElement('div');
+      tempNode = document.createElement('div'),
+      slice = Array.prototype.slice;
 
   function Element(node) {
     if (!node) {
@@ -56,7 +57,7 @@ define(function (require) {
   // init function that converts elements to components.
   function init() {
     // Create tags.
-    var nodes = Array.slice(document.getElementsByTagName('body')[0].querySelectorAll('*'), 0);
+    var nodes = slice.call(document.getElementsByTagName('body')[0].querySelectorAll('*'), 0);
     nodes.forEach(function (node) {
       var name = node.nodeName.toLowerCase();
       if (name.indexOf('fifi-') === 0) {
