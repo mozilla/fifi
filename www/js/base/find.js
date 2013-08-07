@@ -1,14 +1,11 @@
-/*jshint browser: true*/
-/*global define */
-define(function (require) {
-  var events = require('events');
+define([], function () {
+  'use strict';
 
-  return require('app/element')({
-    template: require('tmpl!./find.html'),
+  return {
     constructor: function () {
       // Listen for api/find calls, and update the text, if
       // it does not originate from this text box.
-      events.on('api/find', function (data) {
+      socket.on('api/find', function (data) {
         if (!data.typed) {
           this.node.value = data.term;
         }
@@ -31,12 +28,11 @@ define(function (require) {
 
       if (term) {
         console.log('term is: ' + term);
-        events.emit('api/find', {
+        socket.emit('api/find', {
           term: term,
           typed: true
         });
       }
     }
-  });
+  };
 });
-

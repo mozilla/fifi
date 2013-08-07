@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <script data-main="app" src="lib/alameda.js"></script>
+    <title>FiFi Search</title>
+    <meta content="width=device-width" height="device-height" user-scalable="no"
+          initial-scale="1.0" maximum-scale="1.0" minimum-scale="1.0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
   <body>
     <div id="wrapper">
-      <div class="find-container">
-        <fifi-find></fifi-find>
-      </div>
+      <div id="search"></div>
       <fifi-suggest data-engineid="google.com"></fifi-suggest>
       <fifi-def data-engineid="en.wikipedia.org"></fifi-def>
     </div>
+    <script src="js/require.js" data-main="js/config"></script>
   </body>
 </html>

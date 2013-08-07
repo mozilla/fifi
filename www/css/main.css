@@ -55,18 +55,13 @@ table {
   padding: 5px;
 }
 
-.fifi-find {
+#fifi-find {
   border: 1px solid #eee;
   border-radius: 5px;
   font-size: 20px;
   margin: 3px;
   padding: 5px;
   width: 97.3%;
-}
-
-.fifi-def {
-  float: right;
-  width: 50%;
 }
 
 .suggestions li {
