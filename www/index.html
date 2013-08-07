@@ -5,11 +5,12 @@
     <script data-main="app" src="lib/alameda.js"></script>
   </head>
   <body>
-    <div class="find-container">
+    <div id="wrapper">
+      <div class="find-container">
         <fifi-find></fifi-find>
+      </div>
+      <fifi-suggest data-engineid="google.com"></fifi-suggest>
+      <fifi-def data-engineid="en.wikipedia.org"></fifi-def>
     </div>
-
-    <fifi-suggest data-engineid="google.com"></fifi-suggest>
-    <fifi-def data-engineid="en.wikipedia.org"></fifi-def>
   </body>
 </html>

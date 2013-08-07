@@ -2,12 +2,10 @@
 /*global define, console */
 
 define(function (require) {
-  var socket,
-    io = require('socket.io'),
-    events = require('events'),
-    socketUrl = location.hash.indexOf('dev') === -1 ?
-          'http://immense-reef-2130.herokuapp.com' :
-          'http://127.0.0.1:5000';
+  var socket;
+  var io = require('socket.io');
+  var events = require('events');
+  var socketUrl = 'http://127.0.0.1:5000';
 
   console.log('Using server: ' + socketUrl);
 
