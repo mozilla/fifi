@@ -25,18 +25,27 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
+if(runtime.contextOrFrameLookup(context, frame, "found") > 0) {
+output += "\n  ";
 frame = frame.push();
 var t_2 = runtime.contextOrFrameLookup(context, frame, "results");
 if(t_2) {for(var t_1=0; t_1 < t_2.length; t_1++) {
 var t_3 = t_2[t_1];
-frame.set("result", t_3);
-output += "\n  <li data-term=\"";
+frame.set("r", t_3);
+output += "\n    <li data-term=\"";
 output += runtime.suppressValue(t_3, env.autoesc);
-output += "\" data-action=\"concept\">\n    ";
+output += "\" data-action=\"concept\" data-engine=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "engineId"), env.autoesc);
+output += "\">\n      <span>";
 output += runtime.suppressValue(t_3, env.autoesc);
-output += "\n  </li>\n";
+output += "</span>\n    </li>\n  ";
 }
 }frame = frame.pop();
+output += "\n";
+}
+else {
+output += "\n  <h1>Search whatever.</h1>\n";
+}
 output += "\n";
 return output;
 } catch (e) {

@@ -51,12 +51,19 @@ table {
   box-sizing: border-box;
 }
 
+h1, p, span {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
 #wrapper {
+  margin: 0 auto;
   padding: 5px;
+  width: 758px;
 }
 
 #fifi-find {
-  border: 1px solid #eee;
+  background-color: #fff9b4;
+  border: 1px solid #b9ae34;
   border-radius: 5px;
   font-size: 20px;
   margin: 3px;
@@ -64,10 +71,43 @@ table {
   width: 97.3%;
 }
 
+#search h1 {
+  font-size: 80px;
+  letter-spacing: -2px;
+  margin: 10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .suggestions li {
-  background-color: #eee;
+  background-color: #2394e3;
+  color: #e8f6ff;
+  display: block;
   float: left;
+  font-size: 15px;
   height: 182px;
   margin: 2px;
+  position: relative;
   width: 185px;
+}
+
+.suggestions li[data-engine="en.wikipedia.org"] {
+  background-color: #a0c62b;
+}
+
+.suggestions li[data-engine="amazon.com"] {
+  background-color: #e58718;
+}
+
+.suggestions li span {
+  bottom: 0;
+  display: block;
+  font-size: 17px;
+  overflow: hidden;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 175px;
 }
