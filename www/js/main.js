@@ -9,12 +9,14 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
   var lastLocation = "";
 
   var io = require('socket.io');
-  var socketUrl = 'http://127.0.0.1:5000';
+  var socketUrl = location.hash.indexOf('dev') === -1 ?
+    'http://immense-reef-2130.herokuapp.com' :
+    'http://127.0.0.1:5000';
   var socket = io.connect(socketUrl);
   var lastSearch;
   var lastTerm;
-  var currResults = '';
-  var suggestionsEl = wrapper.find('.suggestions');
+
+  //nunjucks.configure('/templates', { autoescape: true });
 
   var autoset = new Autoset();
 
@@ -27,22 +29,18 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
     var results = data.result[1];
 
     if (results === 'undefined') {
-      wrapper.find('.suggestions').append(
-        nunjucks.env.getTemplate('results.html').render({
-          results: {},
-          found: 0,
-          engineId: false
-        })
-      );
+      nunjucks.render('results.html', {
+        results: {},
+        found: 0,
+        engineId: false
+      }, function (err, res) { wrapper.find('.suggestions').append(res) });
     } else {
       autoset.generate(results, data.engineId, function () {
-        wrapper.find('.suggestions').html(
-          nunjucks.env.getTemplate('results.html').render({
-            results: autoset.results,
-            found: utils.keySize(autoset.results),
-            engineId: data.engineId
-          })
-        );
+        nunjucks.render('results.html', {
+          results: autoset.results,
+          found: utils.keySize(autoset.results),
+          engineId: data.engineId
+        }, function (err, res) { wrapper.find('.suggestions').html(res) });
       });
     }
   });
@@ -53,9 +51,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
   });
 
   // Load initial search template
-  wrapper.find('#search').html(
-    nunjucks.env.getTemplate('suggest.html').render()
-  );
+  nunjucks.render('suggest.html',
+    function (err, res) { wrapper.find('#search').html(res) });
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
     ev.preventDefault();
@@ -109,11 +106,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
       case 'concept':
         lastSearch = wrapper.html();
         lastTerm = self.data('term');
-        wrapper.find('#search').html(
-          nunjucks.env.getTemplate('details.html').render({
-            term: lastTerm
-          })
-        );
+        nunjucks.render('details.html', { term: lastTerm },
+          function (err, res) {  wrapper.find('#search').html(res) });
         break;
 
       case 'back':
