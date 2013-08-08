@@ -75,6 +75,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
     switch (self.data('action')) {
       case 'concept':
         lastSearch = wrapper.html();
+        lastTerm = self.data('term');
         wrapper.find('#search').html(
           nunjucks.env.getTemplate('details.html').render({
             term: lastTerm
