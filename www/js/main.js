@@ -6,6 +6,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
 
   var geocoder = new google.maps.Geocoder();
   var haveLocation = false;
+  var havePromptedForLocation = false;
   var lastLocation = "";
 
   var io = require('socket.io');
@@ -71,6 +72,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
   });
 
   function geolocationSuccess (position) {
+    // make sure we don't prompt on focus in case this was called from clicking the button
+    havePromptedForLocation = true;
     // borrowed from
     // https://gist.github.com/larryrubin/2593322#file-phonegap_reverse_geo_lookup-html
     var lat = parseFloat(position.coords.latitude);
@@ -97,6 +100,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
 
   wrapper.find('#fifi-find').on('focus', function (ev) {
     wrapper.find('#fifi-find-box').addClass('fifi-find-box-focused').find('#geolocation-box').addClass('geolocation-box-focused');
+    if (!havePromptedForLocation) {
+      // we do this right away because the panel prompt will cause an unfocus/focus event
+      havePromptedForLocation = true;
+      navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+    }
   });
 
   wrapper.on('touchstart click', function (ev) {
