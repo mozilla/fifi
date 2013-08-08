@@ -1,5 +1,6 @@
-define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunjucks', 'templates', 'async!//maps.googleapis.com/maps/api/js?sensor=true'],
-  function ($, io, find, Autoset, utils, nunjucks) {
+define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
+  'nunjucks', 'templates', 'async!//maps.googleapis.com/maps/api/js?sensor=true'],
+  function ($, io, find, Autoset, utils, nunjucks, templates) {
   'use strict';
 
   var wrapper = $('#wrapper');
@@ -7,8 +8,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
   var geocoder = new google.maps.Geocoder();
   var haveLocation = false;
   var havePromptedForLocation = false;
-  var lastLocation = "";
-
+  var lastLocation = '';
   var io = require('socket.io');
   var socketUrl = location.hash.indexOf('dev') === -1 ?
     'http://immense-reef-2130.herokuapp.com' :
@@ -79,27 +79,32 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
     var lat = parseFloat(position.coords.latitude);
     var lng = parseFloat(position.coords.longitude);
     var latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK && results) {
+
+    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+      if (results && status === google.maps.GeocoderStatus.OK) {
         $.each(results, function (i, address) {
-          if (address.types[0] == "postal_code") {
+          if (address.types[0] === 'postal_code') {
             lastLocation = address.formatted_address;
             haveLocation = true;
-            wrapper.find("#geolocation-name").text(lastLocation);
+            wrapper.find('#geolocation-name').text(lastLocation);
             return false; // break
           }
         });
       } else {
-        console.log("Geocoder failed due to: " + status);
+        console.log('Geocoder failed due to: ' + status);
       }
     });
   }
+
   function geolocationError() {
     console.log("error with geolocation");
   }
 
   wrapper.find('#fifi-find').on('focus', function (ev) {
-    wrapper.find('#fifi-find-box').addClass('fifi-find-box-focused').find('#geolocation-box').addClass('geolocation-box-focused');
+    wrapper.find('#fifi-find-box')
+           .addClass('fifi-find-box-focused')
+           .find('#geolocation-box')
+           .addClass('geolocation-box-focused');
     if (!havePromptedForLocation) {
       // we do this right away because the panel prompt will cause an unfocus/focus event
       havePromptedForLocation = true;
@@ -121,20 +126,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
       case 'back':
         wrapper.html(lastSearch);
         wrapper.find('#fifi-find').val(lastTerm);
-        break;
-
-      case 'geolocation':
-        if (navigator.geolocation) {
-          if (haveLocation) {
-            if (confirm("Would you like to turn off location?")) {
-              wrapper.find('#geolocation-name').text('Location');
-              lastLocation = "";
-              haveLocation = false;
-            }
-          } else {
-            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
-          }
-        }
         break;
     };
   });
