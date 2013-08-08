@@ -1,5 +1,5 @@
-define(['jquery', 'socket.io', 'base/find', 'base/autotag', 'base/utils', 'nunjucks', 'templates'],
-  function ($, io, find, Autotag, utils, nunjucks) {
+define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunjucks', 'templates'],
+  function ($, io, find, Autoset, utils, nunjucks) {
   'use strict';
 
   var wrapper = $('#wrapper');
@@ -12,12 +12,12 @@ define(['jquery', 'socket.io', 'base/find', 'base/autotag', 'base/utils', 'nunju
   var currResults = '';
   var suggestionsEl = wrapper.find('.suggestions');
 
-  var autotag = new Autotag();
+  var autoset = new Autoset();
 
   // Listen for data from server and convert to module events
   socket.on('api/suggestDone', function (data) {
     console.log('GOT api/suggestDone: ', data);
-    autotag.results = {};
+    autoset.results = {};
     socket.emit('api/suggestDone/' + data.engineId, data);
 
     var results = data.result[1];
@@ -31,25 +31,15 @@ define(['jquery', 'socket.io', 'base/find', 'base/autotag', 'base/utils', 'nunju
         })
       );
     } else {
-      wrapper.find('.suggestions').append(
-        nunjucks.env.getTemplate('results.html').render({
-          results: results,
-          found: results.length,
-          engineId: data.engineId
-        })
-      );
-      /*
-      autotag.generate(results, data.engineId, function () {
-        console.log('object -> ', JSON.stringify(autotag.results))
-        suggestionsEl.append(
+      autoset.generate(results, data.engineId, function () {
+        wrapper.find('.suggestions').html(
           nunjucks.env.getTemplate('results.html').render({
-            results: autotag,
-            found: utils.keySize(autotag.results),
+            results: autoset.results,
+            found: utils.keySize(autoset.results),
             engineId: data.engineId
           })
         );
       });
-*/
     }
   });
 
@@ -65,7 +55,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autotag', 'base/utils', 'nunju
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
     ev.preventDefault();
-
+    autoset.results = {};
     var value = $(ev.target).val().toString().trim();
     wrapper.find('.suggestions').empty();
 

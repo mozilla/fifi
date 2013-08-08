@@ -1,7 +1,7 @@
 {% if found > 0 %}
-  {% for r in results %}
-    <li data-term="{{ r }}" data-action="concept" data-engine="{{ engineId }}">
-      <span>{{ r }}</span>
+  {% for k, v in results %}
+    <li data-term="{{ k }}" data-action="concept" data-engine="{{ engineId }}">
+      <span>{{ k }}</span>
     </li>
   {% endfor %}
 {% else %}
