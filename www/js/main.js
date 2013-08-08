@@ -63,7 +63,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
     if (value.length > 0) {
       lastTerm = value;
       setTimeout(function () {
-        socket.emit('api/find', { term: value });
+        socket.emit('api/find', { term: value, location: lastLocation });
       }, 1);
     } else {
       wrapper.find('.suggestions').empty();
