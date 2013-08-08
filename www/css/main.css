@@ -56,19 +56,84 @@ h1, p, span {
 }
 
 #wrapper {
-  margin: 0 auto;
   padding: 5px;
-  width: 758px;
+}
+
+#fifi-find-box {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  transition: top 0.5s, left 0.5s;
+  -webkit-transition: top 0.5s, left 0.5s;
+}
+
+#fifi-find-box.fifi-find-box-focused {
+  top: 5px;
+  left: 5px;
+  margin: 0 2px;
+  height: 40px;
 }
 
 #fifi-find {
-  background-color: #fff9b4;
-  border: 1px solid #b9ae34;
-  border-radius: 5px;
-  font-size: 20px;
-  margin: 3px;
-  padding: 5px;
-  width: 97.3%;
+  font-size: 18px;
+  height: 30px;
+  padding: 2px;
+  width: 380px;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+
+#fifi-find:focus {
+  border-color: #66aee9;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+  outline: 0px none;
+}
+
+#geolocation-box {
+  font-size: 18px;
+  line-height: 25px;
+  width: 382px; /* 380 + 1px border * 2 */
+  vertical-align: top;
+  text-align: right;
+  display: block;
+}
+
+#geolocation-box.geolocation-box-focused {
+  width: auto;
+  text-align: left;
+  display: inline-block;
+}
+
+#geolocation {
+  font-size: 14px;
+  line-height: 30px;
+  color: #888;
+  vertical-align: top;
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  white-space: nowrap;
+  padding: 0;
+}
+#geolocation:active {
+  color: #444;
+}
+
+@media only screen and (width: 768px) {
+  /* For portrait layouts only */
+  #fifi-find-box {
+    left: 194px; /* 768 / 2 = 384 - (380 / 2 = 190) = 194 */
+  }
+}
+@media only screen and (width: 1024px) {
+  /* For landscape layouts only */
+  #fifi-find-box {
+    left: 322px; /* 1024 / 2 = 512 - (380 / 2 = 190) = 322 */
+  }
 }
 
 #search h1 {
@@ -77,6 +142,10 @@ h1, p, span {
   margin: 10px;
   text-align: center;
   text-transform: uppercase;
+}
+
+.fifi-suggest {
+  margin-top: 40px;
 }
 
 .suggestions li {

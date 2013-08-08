@@ -1,8 +1,12 @@
-define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunjucks', 'templates'],
+define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunjucks', 'templates', 'async!//maps.googleapis.com/maps/api/js?sensor=true'],
   function ($, io, find, Autoset, utils, nunjucks) {
   'use strict';
 
   var wrapper = $('#wrapper');
+
+  var geocoder = new google.maps.Geocoder();
+  var haveLocation = false;
+  var lastLocation = "";
 
   var io = require('socket.io');
   var socketUrl = 'http://127.0.0.1:5000';
@@ -69,6 +73,35 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
     }
   });
 
+  function geolocationSuccess (position) {
+    // borrowed from
+    // https://gist.github.com/larryrubin/2593322#file-phonegap_reverse_geo_lookup-html
+    var lat = parseFloat(position.coords.latitude);
+    var lng = parseFloat(position.coords.longitude);
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK && results) {
+        $.each(results, function (i, address) {
+          if (address.types[0] == "postal_code") {
+            lastLocation = address.formatted_address;
+            haveLocation = true;
+            wrapper.find("#geolocation-name").text(lastLocation);
+            return false; // break
+          }
+        });
+      } else {
+        console.log("Geocoder failed due to: " + status);
+      }
+    });
+  }
+  function geolocationError() {
+    console.log("error with geolocation");
+  }
+
+  wrapper.find('#fifi-find').on('focus', function (ev) {
+    wrapper.find('#fifi-find-box').addClass('fifi-find-box-focused').find('#geolocation-box').addClass('geolocation-box-focused');
+  });
+
   wrapper.on('touchstart click', function (ev) {
     var self = $(ev.target);
 
@@ -86,6 +119,20 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils', 'nunju
       case 'back':
         wrapper.html(lastSearch);
         wrapper.find('#fifi-find').val(lastTerm);
+        break;
+
+      case 'geolocation':
+        if (navigator.geolocation) {
+          if (haveLocation) {
+            if (confirm("Would you like to turn off location?")) {
+              wrapper.find('#geolocation-name').text('Location');
+              lastLocation = "";
+              haveLocation = false;
+            }
+          } else {
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+          }
+        }
         break;
     };
   });

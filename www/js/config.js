@@ -3,7 +3,8 @@ requirejs.config({
   paths: {
     'jquery': 'lib/jquery',
     'nunjucks': 'lib/nunjucks',
-    'socket.io': 'lib/socket.io'
+    'socket.io': 'lib/socket.io',
+    'async': 'lib/async'
   },
   shim: {
     'jquery': {
