@@ -160,14 +160,6 @@ h1, p, span {
   width: 185px;
 }
 
-.suggestions li[data-engine="en.wikipedia.org"] {
-  background-color: #a0c62b;
-}
-
-.suggestions li[data-engine="amazon.com"] {
-  background-color: #e58718;
-}
-
 .suggestions li span {
   bottom: 0;
   display: block;
