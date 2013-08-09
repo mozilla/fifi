@@ -7,7 +7,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   var geocoder = new google.maps.Geocoder();
   var haveLocation = false;
-  var havePromptedForLocation = false;
   var lastLocation = '';
   var io = require('socket.io');
   var socketUrl = location.hash.indexOf('dev') === -1 ?
@@ -72,8 +71,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   });
 
   function geolocationSuccess (position) {
-    // make sure we don't prompt on focus in case this was called from clicking the button
-    havePromptedForLocation = true;
     // borrowed from
     // https://gist.github.com/larryrubin/2593322#file-phonegap_reverse_geo_lookup-html
     var lat = parseFloat(position.coords.latitude);
@@ -100,15 +97,15 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     console.log("error with geolocation");
   }
 
-  wrapper.find('#fifi-find').on('focus', function (ev) {
+  wrapper.find('#fifi-find').one('focus', function () {
     wrapper.find('#fifi-find-box')
            .addClass('fifi-find-box-focused')
            .find('#geolocation-box')
            .addClass('geolocation-box-focused');
-    if (!havePromptedForLocation) {
-      // we do this right away because the panel prompt will cause an unfocus/focus event
-      havePromptedForLocation = true;
-      navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+    if (navigator.geolocation) {
+      if (!haveLocation) {
+        navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+      }
     }
   });
 
@@ -126,6 +123,20 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       case 'back':
         wrapper.html(lastSearch);
         wrapper.find('#fifi-find').val(lastTerm);
+        break;
+
+      case 'geolocation':
+        if (navigator.geolocation) {
+          if (haveLocation) {
+            if (confirm("Would you like to turn off location?")) {
+              wrapper.find('#geolocation-name').text('Location');
+              lastLocation = "";
+              haveLocation = false;
+            }
+          } else {
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+          }
+        }
         break;
     };
   });
