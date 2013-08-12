@@ -26,7 +26,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     autoset.results = {};
     socket.emit('api/suggestDone/' + data.engineId, data);
 
-    var results = data.result[1];
+    var results = data.result;
 
     if (results === 'undefined') {
       nunjucks.render('results.html', {
