@@ -56,7 +56,11 @@ h1, p, span {
 }
 
 #wrapper {
-  padding: 5px;
+  height: 1024px;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  width: 768px;
 }
 
 #fifi-find-box {
@@ -68,9 +72,8 @@ h1, p, span {
 }
 
 #fifi-find-box.fifi-find-box-focused {
-  top: 5px;
-  left: 5px;
-  margin: 0 2px;
+  top: 6px;
+  left: 3px;
   height: 40px;
 }
 
@@ -145,7 +148,8 @@ h1, p, span {
 }
 
 .fifi-suggest {
-  margin-top: 40px;
+  float: left;
+  margin-top: 46px;
 }
 
 .suggestions li {
@@ -155,9 +159,9 @@ h1, p, span {
   float: left;
   font-size: 15px;
   height: 182px;
-  margin: 2px;
+  margin: 3px;
   position: relative;
-  width: 185px;
+  width: 182px;
 }
 
 .suggestions li span {
