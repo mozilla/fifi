@@ -18,30 +18,29 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   var autoset = new Autoset();
 
+  nunjucks.configure('/templates', { autoescape: true });
+
   // Listen for data from server and convert to module events
   socket.on('api/suggestDone', function (data) {
     console.log('GOT api/suggestDone: ', data);
-    autoset.results = {};
     socket.emit('api/suggestDone/' + data.engineId, data);
 
     var results = data.result;
 
     if (results === 'undefined') {
       nunjucks.render('results.html', {
-        results: {},
-        found: 0,
-        engineId: false
+        engineSet: {},
+        found: 0
       }, function (err, res) {
-        wrapper.find('.suggestions').append(res)
+        wrapper.find('.suggestions').append(res);
       });
     } else {
       autoset.generate(results, data.engineId, function () {
         nunjucks.render('results.html', {
-          results: autoset.results,
-          found: utils.keySize(autoset.results),
-          engineId: data.engineId
+          engineSet: autoset.engines,
+          found: utils.keySize(autoset.engines)
         }, function (err, res) {
-          wrapper.find('.suggestions').html(res)
+          wrapper.find('.suggestions').html(res);
         });
       });
     }
@@ -53,13 +52,17 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   });
 
   // Load initial search template
-  nunjucks.render('suggest.html',
-    function (err, res) { wrapper.find('#search').html(res) });
+  nunjucks.render('suggest.html', function (err, res) {
+    wrapper.find('#search').html(res)
+  });
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
     ev.preventDefault();
     autoset.results = {};
+
     var value = $(ev.target).val().toString();
+
+    autoset.engineClear();
     wrapper.find('.suggestions').empty();
 
     if (value.length > 0) {
@@ -118,8 +121,9 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       case 'concept':
         lastSearch = wrapper.html();
         lastTerm = self.data('term');
-        nunjucks.render('details.html', { term: lastTerm },
-          function (err, res) {  wrapper.find('#search').html(res) });
+        nunjucks.render('details.html', { term: lastTerm }, function (err, res) {
+          wrapper.find('#search').html(res)
+        });
         break;
 
       case 'back':

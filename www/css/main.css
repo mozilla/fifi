@@ -164,6 +164,18 @@ h1, p, span {
   width: 182px;
 }
 
+.suggestions li[data-engine="amazon.com"] {
+  background-color: #e87300;
+}
+
+.suggestions li[data-engine="yelp.com"] {
+  background-color: #df2424;
+}
+
+.suggestions li[data-engine="en.wikipedia.org"] {
+  background-color: #24dddf;
+}
+
 .suggestions li span {
   bottom: 0;
   display: block;
@@ -172,7 +184,5 @@ h1, p, span {
   padding: 5px;
   position: absolute;
   text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   width: 175px;
 }

@@ -1,8 +1,12 @@
 {% if found > 0 %}
-  {% for k, v in results %}
-    <li data-term="{{ k }}" data-action="concept" data-engine="{{ engineId }}">
-      <span>{{ k }}</span>
-    </li>
+  {% for k, v in engineSet %}
+    {% for c in v.concepts %}
+      {% if c.concept %}
+        <li data-term="{{ c.concept }}" data-action="concept" data-engine="{{ k }}">
+          <span>{{ c.concept }}</span>
+        </li>
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 {% else %}
   <h1>Search whatever.</h1>
