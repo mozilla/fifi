@@ -16,8 +16,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   var lastSearch;
   var lastTerm;
 
-  //nunjucks.configure('/templates', { autoescape: true });
-
   var autoset = new Autoset();
 
   // Listen for data from server and convert to module events
@@ -33,14 +31,18 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         results: {},
         found: 0,
         engineId: false
-      }, function (err, res) { wrapper.find('.suggestions').append(res) });
+      }, function (err, res) {
+        wrapper.find('.suggestions').append(res)
+      });
     } else {
       autoset.generate(results, data.engineId, function () {
         nunjucks.render('results.html', {
           results: autoset.results,
           found: utils.keySize(autoset.results),
           engineId: data.engineId
-        }, function (err, res) { wrapper.find('.suggestions').html(res) });
+        }, function (err, res) {
+          wrapper.find('.suggestions').html(res)
+        });
       });
     }
   });
@@ -128,9 +130,9 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       case 'geolocation':
         if (navigator.geolocation) {
           if (haveLocation) {
-            if (confirm("Would you like to turn off location?")) {
+            if (confirm('Would you like to turn off location?')) {
               wrapper.find('#geolocation-name').text('Location');
-              lastLocation = "";
+              lastLocation = '';
               haveLocation = false;
             }
           } else {

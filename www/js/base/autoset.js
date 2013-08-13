@@ -7,6 +7,7 @@ define([], function () {
     this.results = {};
 
     this.generate = function (value, engineId, callback) {
+      console.log(this.results)
       if (value) {
         value = value.toString().toLowerCase().trim().split(',');
         var count = 0;
