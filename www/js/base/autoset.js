@@ -9,13 +9,13 @@ define([], function () {
     this.generate = function (value, engineId, callback) {
       console.log(this.results)
       if (value) {
-        value = value.toString().toLowerCase().trim().split(',');
         var count = 0;
 
-        for (var i = 0; i < value.length; i ++) {
+        for (var i = 0, val; val = value[i]; i += 1) {
           count ++;
-          if (!this.results[value[i]]) {
-            this.results[value[i]] = {
+          val = val.toLowerCase();
+          if (!this.results[val]) {
+            this.results[val] = {
               'searchEngines': {
                 'amazon.com': {},
                 'google.com': {},

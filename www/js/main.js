@@ -59,7 +59,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   wrapper.on('keyup', '#fifi-find', function (ev) {
     ev.preventDefault();
     autoset.results = {};
-    var value = $(ev.target).val().toString().trim();
+    var value = $(ev.target).val().toString();
     wrapper.find('.suggestions').empty();
 
     if (value.length > 0) {
