@@ -51,10 +51,18 @@ define(['./utils'], function (utils) {
             this.engines[engineId].concepts.push({
               concept: val,
               searchEngines: {
-                'amazon.com': {},
-                'google.com': {},
-                'yelp.com': {},
-                'en.wikipedia.org': {}
+                'amazon.com': {
+                  result: false
+                },
+                'google.com': {
+                  result: false
+                },
+                'yelp.com': {
+                  result: false
+                },
+                'en.wikipedia.org': {
+                  result: false
+                }
               }
             });
           }

@@ -14,6 +14,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     'http://127.0.0.1:5000';
   var socket = io.connect(socketUrl);
   var lastSearch;
+  var lastEngine;
   var lastTerm;
 
   var autoset = new Autoset();
@@ -48,7 +49,26 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   socket.on('api/queryDone', function (data) {
     console.log('GOT api/queryDone: ', data);
-    socket.emit('api/queryDone/' + data.engineId, data);
+
+    var engine = autoset.engines[lastEngine];
+
+    for (var i = 0; i < engine.concepts.length; i ++) {
+      if (engine.concepts[i].concept === data.term) {
+        nunjucks.render('result.html', {
+          engineId: data.engineId
+        }, function (err, res) {
+          wrapper.find('#details').append(res);
+          console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          var iframe = wrapper.find('#details li[data-engine="' + data.engineId + '"] iframe')[0]
+                              .contentWindow.document;
+          iframe.open();
+          iframe.write(data.result);
+          iframe.close();
+        });
+
+        break;
+      }
+    }
   });
 
   // Load initial search template
@@ -119,8 +139,18 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
     switch (self.data('action')) {
       case 'concept':
+        wrapper.find('#details').empty();
         lastSearch = wrapper.html();
         lastTerm = self.data('term');
+        lastEngine = self.data('engine');
+
+        for (var engine in autoset.engines) {
+          socket.emit('api/query', { term: lastTerm,
+            location: lastLocation,
+            engineId: engine
+          });
+        }
+
         nunjucks.render('details.html', { term: lastTerm }, function (err, res) {
           wrapper.find('#search').html(res)
         });
