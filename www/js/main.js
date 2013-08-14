@@ -6,9 +6,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   var wrapper = $('#wrapper');
 
   var inResults = false;
-  var io = require('socket.io');
   var socketUrl = location.hash.indexOf('dev') === -1 ?
-    'http://immense-reef-2130.herokuapp.com' :
+    'http://clark-fifi.herokuapp.com/' :
     'http://127.0.0.1:5000';
   var socket = io.connect(socketUrl);
   var lastEngine;
