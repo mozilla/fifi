@@ -25,7 +25,14 @@
   </head>
   <body>
     <div id="wrapper">
-      <div id="search"></div>
+    <div id="fifi-find-box">
+      <input type="text" value="" placeholder="Search..." autocomplete="off" id="fifi-find">
+      <div id="geolocation-box">
+        <button id="geolocation" data-action="geolocation"><i class="icon-location-arrow"></i> <span id="geolocation-name">Location</span></button>
+      </div>
+    </div>
+    <div id="suggestions"></div>
+    <div id="details"></div>
     </div>
     <script src="js/require.js" data-main="js/config"></script>
   </body>

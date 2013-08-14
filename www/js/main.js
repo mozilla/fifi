@@ -7,13 +7,13 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   var geocoder = new google.maps.Geocoder();
   var haveLocation = false;
+  var inResults = false;
   var lastLocation = '';
   var io = require('socket.io');
   var socketUrl = location.hash.indexOf('dev') === -1 ?
     'http://immense-reef-2130.herokuapp.com' :
     'http://127.0.0.1:5000';
   var socket = io.connect(socketUrl);
-  var lastSearch;
   var lastEngine;
   var lastTerm;
 
@@ -73,7 +73,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   // Load initial search template
   nunjucks.render('suggest.html', function (err, res) {
-    wrapper.find('#search').html(res)
+    wrapper.find('#suggestions').html(res)
   });
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
@@ -134,31 +134,48 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     }
   });
 
+  function goBack() {
+    wrapper.find('#details').hide();
+    wrapper.find('#suggestions').show();
+    // reset original search terms
+    wrapper.find('#fifi-find').val(lastTerm);
+    inResults = false;
+  }
+
+  wrapper.find('#fifi-find').on('focus', function () {
+    if (inResults) {
+      goBack();
+    }
+  });
+
   wrapper.on('touchstart click', function (ev) {
     var self = $(ev.target);
 
     switch (self.data('action')) {
       case 'concept':
-        wrapper.find('#details').empty();
-        lastSearch = wrapper.html();
-        lastTerm = self.data('term');
+        wrapper.find('#suggestions').hide();
         lastEngine = self.data('engine');
+        // save the current terms
+        lastTerm = wrapper.find('#fifi-find').val();
+        // set suggested terms as current
+        wrapper.find('#fifi-find').val(self.data('term'));
 
         for (var engine in autoset.engines) {
-          socket.emit('api/query', { term: lastTerm,
+          socket.emit('api/query', { 
+            term: self.data('term'),
             location: lastLocation,
             engineId: engine
           });
         }
 
-        nunjucks.render('details.html', { term: lastTerm }, function (err, res) {
-          wrapper.find('#search').html(res)
+        nunjucks.render('details.html', { term: self.data('term') }, function (err, res) {
+          inResults = true;
+          wrapper.find('#details').html(res).show();
         });
         break;
 
       case 'back':
-        wrapper.html(lastSearch);
-        wrapper.find('#fifi-find').val(lastTerm);
+        goBack();
         break;
 
       case 'geolocation':

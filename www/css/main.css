@@ -139,17 +139,20 @@ h1, p, span {
   }
 }
 
+#suggestions,
+#details {
+  padding-top: 46px;
+}
+
 #search h1 {
   font-size: 80px;
   letter-spacing: -2px;
-  margin: 10px;
   text-align: center;
   text-transform: uppercase;
 }
 
 .fifi-suggest {
   float: left;
-  margin-top: 46px;
 }
 
 .suggestions li {
