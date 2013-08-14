@@ -58,7 +58,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           engineId: data.engineId
         }, function (err, res) {
           wrapper.find('#details').append(res);
-          console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
           var iframe = wrapper.find('#details li[data-engine="' + data.engineId + '"] iframe')[0]
                               .contentWindow.document;
           iframe.open();
