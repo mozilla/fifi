@@ -1,14 +1,11 @@
 define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
-  'nunjucks', 'templates', 'async!//maps.googleapis.com/maps/api/js?sensor=true'],
-  function ($, io, find, Autoset, utils, nunjucks, templates) {
+  'base/geo', 'nunjucks', 'templates'],
+  function ($, io, find, Autoset, utils, geo, nunjucks, templates) {
   'use strict';
 
   var wrapper = $('#wrapper');
 
-  var geocoder = new google.maps.Geocoder();
-  var haveLocation = false;
   var inResults = false;
-  var lastLocation = '';
   var io = require('socket.io');
   var socketUrl = location.hash.indexOf('dev') === -1 ?
     'http://immense-reef-2130.herokuapp.com' :
@@ -73,7 +70,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   // Load initial search template
   nunjucks.render('suggest.html', function (err, res) {
-    wrapper.find('#suggestions').html(res)
+    wrapper.find('#suggestions').html(res);
   });
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
@@ -88,50 +85,19 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     if (value.length > 0) {
       lastTerm = value;
       setTimeout(function () {
-        socket.emit('api/find', { term: value, location: lastLocation });
+        socket.emit('api/find', { term: value, location: geo.getLastLocation() });
       }, 1);
     } else {
       wrapper.find('.suggestions').empty();
     }
   });
 
-  function geolocationSuccess (position) {
-    // borrowed from
-    // https://gist.github.com/larryrubin/2593322#file-phonegap_reverse_geo_lookup-html
-    var lat = parseFloat(position.coords.latitude);
-    var lng = parseFloat(position.coords.longitude);
-    var latlng = new google.maps.LatLng(lat, lng);
-
-    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-      if (results && status === google.maps.GeocoderStatus.OK) {
-        $.each(results, function (i, address) {
-          if (address.types[0] === 'postal_code') {
-            lastLocation = address.formatted_address;
-            haveLocation = true;
-            wrapper.find('#geolocation-name').text(lastLocation);
-            return false; // break
-          }
-        });
-      } else {
-        console.log('Geocoder failed due to: ' + status);
-      }
-    });
-  }
-
-  function geolocationError() {
-    console.log("error with geolocation");
-  }
-
   wrapper.find('#fifi-find').one('focus', function () {
     wrapper.find('#fifi-find-box')
            .addClass('fifi-find-box-focused')
            .find('#geolocation-box')
            .addClass('geolocation-box-focused');
-    if (navigator.geolocation) {
-      if (!haveLocation) {
-        navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
-      }
-    }
+    geo.startWatchingPosition(wrapper.find('#geolocation-name'));
   });
 
   function goBack() {
@@ -148,6 +114,13 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     }
   });
 
+  // on N+1 runs, if we've already successfully gotten their location
+  // lets just go ahead and grab it again.  there's no real API to know
+  // that our site has been granted the location permission
+  if (geo.haveGeolocationPermission()) {
+    geo.startWatchingPosition(wrapper.find('#geolocation-name'));
+  }
+
   wrapper.on('touchstart click', function (ev) {
     var self = $(ev.target);
 
@@ -163,7 +136,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         for (var engine in autoset.engines) {
           socket.emit('api/query', { 
             term: self.data('term'),
-            location: lastLocation,
+            location: geo.getLastLocation(),
             engineId: engine
           });
         }
@@ -179,18 +152,12 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         break;
 
       case 'geolocation':
-        if (navigator.geolocation) {
-          if (haveLocation) {
-            if (confirm('Would you like to turn off location?')) {
-              wrapper.find('#geolocation-name').text('Location');
-              lastLocation = '';
-              haveLocation = false;
-            }
-          } else {
-            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
-          }
+        if (!geo.isWatchingPosition()) {
+          geo.startWatchingPosition(wrapper.find('#geolocation-name'));
+        } else {
+          geo.stopWatchingPosition();
         }
         break;
-    };
+    }
   });
 });
