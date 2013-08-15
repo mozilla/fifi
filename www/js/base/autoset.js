@@ -49,21 +49,7 @@ define(['./utils'], function (utils) {
           if (!this.results[val] && val.length > 0 && this.engines[engineId].concepts.length < 3) {
             this.results[val] = true;
             this.engines[engineId].concepts.push({
-              concept: val,
-              searchEngines: {
-                'amazon.com': {
-                  result: false
-                },
-                'google.com': {
-                  result: false
-                },
-                'yelp.com': {
-                  result: false
-                },
-                'en.wikipedia.org': {
-                  result: false
-                }
-              }
+              concept: val
             });
           }
 
