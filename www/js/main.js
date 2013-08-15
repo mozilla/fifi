@@ -62,6 +62,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                      .text(data.result.items[0].snippet);
               break;
 
+            case 'amazon.com':
+              console.log(data.result.itemsearchresponse.items[0].item[0])
+              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+                     .text(data.result.itemsearchresponse.items[0].item[0].detailpageurl[0]);
+
             default:
               break;
           };
