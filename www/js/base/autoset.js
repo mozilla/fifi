@@ -4,9 +4,8 @@ define(['./utils'], function (utils) {
   var Autoset = function () {
     var self = this;
 
-    this.results = {};
-
     this.engineClear = function () {
+      this.results = {};
       this.engines = {
         'google.com': {
           concepts: []

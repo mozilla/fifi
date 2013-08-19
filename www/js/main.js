@@ -122,7 +122,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   wrapper.on('keyup', '#fifi-find', function (ev) {
     ev.preventDefault();
-    autoset.results = {};
 
     var value = $(ev.target).val().toString();
 
@@ -131,9 +130,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
     if (value.length > 0) {
       lastTerm = value;
-      setTimeout(function () {
-        socket.emit('api/find', { term: value, location: geo.getLastLocation() });
-      }, 1);
+      socket.emit('api/find', { term: value, location: geo.getLastLocation() });
     } else {
       wrapper.find('.suggestions').empty();
     }
