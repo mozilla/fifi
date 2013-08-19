@@ -53,7 +53,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         nunjucks.render('result.html', {
           engineId: data.engineId
         }, function (err, res) {
-          wrapper.find('#details').append(res);
+          wrapper.find('#details-list').append(res);
 
           switch (data.engineId) {
             case 'google.com':
@@ -64,7 +64,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 result = 'google - ' + data.result.items[0].snippet;
               }
 
-              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+              wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content')
                      .text(result);
               break;
 
@@ -76,7 +76,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 result = 'amazon - ' + data.itemsearchresponse.items[0].item[0].detailpageurl[0];
               }
 
-              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+              wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content')
                      .text(result);
               break;
 
@@ -89,7 +89,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                          data.result.businesses[0].location.address[0];
               }
 
-              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+              wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content')
                      .text(result);
               break;
 
@@ -101,7 +101,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 result = 'wikipedia - ' + article;
               }
 
-              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+              wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content')
                      .html(result);
               break;
 
