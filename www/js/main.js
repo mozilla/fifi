@@ -93,6 +93,18 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                      .text(result);
               break;
 
+            case 'en.wikipedia.org':
+              var article = data.result;
+              var result = 'wikipedia - NOT FOUND';
+
+              if (article) {
+                result = 'wikipedia - ' + article;
+              }
+
+              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+                     .html(result);
+              break;
+
             default:
               break;
           };
