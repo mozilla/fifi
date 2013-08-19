@@ -5,20 +5,6 @@ define(['./utils'], function (utils) {
     var self = this;
 
     this.results = {};
-    this.engines = {
-      'google.com': {
-        concepts: []
-      },
-      'amazon.com': {
-        concepts: []
-      },
-      'yelp.com': {
-        concepts: []
-      },
-      'en.wikipedia.org': {
-        concepts: []
-      }
-    };
 
     this.engineClear = function () {
       this.engines = {
@@ -36,6 +22,8 @@ define(['./utils'], function (utils) {
         }
       };
     };
+
+    this.engineClear();
 
     this.generate = function (value, engineId, callback) {
       if (value) {

@@ -57,15 +57,41 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
           switch (data.engineId) {
             case 'google.com':
-              console.log(data.result.items[0].snippet)
+              var link = data.result && data.result.items;
+              var result = 'google - NOT FOUND';
+
+              if (link) {
+                result = 'google - ' + data.result.items[0].snippet;
+              }
+
               wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
-                     .text(data.result.items[0].snippet);
+                     .text(result);
               break;
 
             case 'amazon.com':
-              console.log(data.result.itemsearchresponse.items[0].item[0])
+              var product = data.result && data.result.itemsearchresponse;
+              var result = 'amazon - NOT FOUND';
+
+              if (product && data.itemsearchresponse) {
+                result = 'amazon - ' + data.itemsearchresponse.items[0].item[0].detailpageurl[0];
+              }
+
               wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
-                     .text(data.result.itemsearchresponse.items[0].item[0].detailpageurl[0]);
+                     .text(result);
+              break;
+
+            case 'yelp.com':
+              var business = data.result && data.result.businesses;
+              var result = 'yelp - NOT FOUND';
+
+              if (business) {
+                result = 'yelp - ' + data.result.businesses[0].name + ' ' +
+                         data.result.businesses[0].location.address[0];
+              }
+
+              wrapper.find('#details li[data-engine="' + data.engineId + '"] .content')
+                     .text(result);
+              break;
 
             default:
               break;
