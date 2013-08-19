@@ -69,11 +69,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
               break;
 
             case 'amazon.com':
-              var product = data.result && data.result.itemsearchresponse;
+              var product = data.result && data.result.length;
               var result = 'amazon - NOT FOUND';
 
-              if (product && data.itemsearchresponse) {
-                result = 'amazon - ' + data.itemsearchresponse.items[0].item[0].detailpageurl[0];
+              if (product) {
+                result = 'amazon - ' + data.result[0].detailpageurl;
               }
 
               wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content')
