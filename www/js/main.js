@@ -87,35 +87,35 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 for (var index = 0, item; item = list[index]; index += 1) {
                   if ('en.wikipedia.org' === item.displayLink) {
                     defList.append(
-                      $('<li/>').append(
-                        $('<a/>').text(item.title.replace(' - Wikipedia, the free encyclopedia', ' on Wikipedia')).attr('href', item.link)
+                      $('<li class="wikipedia icon"/>').append(
+                        $('<a/>').text(item.title.replace(' - Wikipedia, the free encyclopedia', '')).attr('href', item.link)
                         )
                       );
                   } else if ('twitter.com' === item.displayLink) {
                     defList.append(
-                      $('<li/>').append(
-                        $('<a/>').text(item.link.replace(/http(s)?:\/\/twitter\.com\//,'') + ' on Twitter').attr('href', item.link)
+                      $('<li class="twitter icon"/>').append(
+                        $('<a/>').text(item.link.replace(/http(s)?:\/\/twitter\.com\//,'')).attr('href', item.link)
                         )
                       );
                   // locate a vimeo user account
                   } else if ('vimeo.com' === item.displayLink) {
                     defList.append(
-                      $('<li/>').append(
-                        $('<a/>').text(item.title).attr('href', item.link)
+                      $('<li class="vimeo icon"/>').append(
+                        $('<a/>').text(item.title.replace('on Vimeo', '')).attr('href', item.link)
                         )
                       );
                   // Locate a facebook page for result
                   } else if ('www.facebook.com' === item.displayLink) {
                     defList.append(
-                      $('<li/>').append(
-                        $('<a/>').text(item.title.replace('| Facebook', 'on Facebook')).attr('href', item.link)
+                      $('<li class="facebook icon"/>').append(
+                        $('<a/>').text(item.title.replace('| Facebook', '')).attr('href', item.link)
                         )
                       );
                   // find a YouTube user account
                   } else if (item.formattedUrl.indexOf('www.youtube.com/user/') === 0) {
                     defList.append(
-                      $('<li/>').append(
-                        $('<a/>').text(item.title.replace('- YouTube', ' on YouTube')).attr('href', item.link)
+                      $('<li class="youtube icon"/>').append(
+                        $('<a/>').text(item.title.replace('- YouTube', '')).attr('href', item.link)
                         )
                       );
                   // this will just find youtube videos that might be useful

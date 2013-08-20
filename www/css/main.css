@@ -55,6 +55,10 @@ h1, p, span {
   font-family: Helvetica, Arial, sans-serif;
 }
 
+a {
+  color: #2518B5;
+}
+
 #wrapper {
   height: 1024px;
   margin: 0 auto;
@@ -206,6 +210,10 @@ h1, p, span {
   margin-bottom: 10px;
 }
 
+#definition-links li {
+  margin: 5px 0;
+}
+
 .result-item {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 90%;
@@ -233,6 +241,33 @@ h1, p, span {
 .result-snippet {
   font-size: 90%;
   color: #444;
+}
+
+.icon {
+  padding-left: 18px;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+.wikipedia {
+  background-image: url('../images/wikipedia-16x16.png');
+}
+
+.youtube {
+  background-image: url('../images/youtube-16x16.png');
+}
+
+.twitter {
+  background-image: url('../images/twitter-16x16.png');
+}
+
+.vimeo {
+  background-image: url('../images/vimeo-16x16.png');
+}
+
+.facebook {
+  background-image: url('../images/facebook-16x16.png');
 }
 
 /**
