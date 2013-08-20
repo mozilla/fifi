@@ -190,7 +190,84 @@ h1, p, span {
   width: 175px;
 }
 
-iframe {
-  height: 200px;
-  width: 740px;
+#definition,
+#details-list {
+  vertical-align: top;
+  display: table-cell;
+  padding: 10px;
+}
+
+#definition {
+  width: 30%;
+}
+
+#details-list {
+  width: 65%;
+}
+
+#details-list li {
+  width: 50%;
+  float: left;
+}
+
+#definition-text {
+  max-height: 200px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.result-item {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 90%;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.result-image {
+  float: left;
+  max-width: 64px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.result-title {
+  color: #2518B5;
+  display: block;
+}
+
+.result-url {
+  color: #00802A;
+  display: block;
+}
+
+.result-snippet {
+  font-size: 90%;
+  color: #444;
+}
+
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
 }

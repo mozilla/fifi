@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<ul id=\"details-list\">\n</ul>\n";
+output += "<div id=\"definition\">\n\t<p id=\"definition-text\"></p>\n\t<ul id=\"definition-links\"></ul>\n\t<ul id=\"definition-videos\"></ul>\n\t<ul id=\"definition-photos\"></ul>\n</div>\n<ul id=\"details-list\">\n</ul>\n";
 cb(null, output);
 ;
 } catch (e) {
