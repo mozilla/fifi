@@ -156,7 +156,9 @@ h1, p, span {
 }
 
 .suggestions li {
-  background-color: #2394e3;
+  background-color: #111;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: #e8f6ff;
   display: block;
   float: left;
@@ -165,18 +167,6 @@ h1, p, span {
   margin: 3px;
   position: relative;
   width: 182px;
-}
-
-.suggestions li[data-engine="amazon.com"] {
-  background-color: #e87300;
-}
-
-.suggestions li[data-engine="yelp.com"] {
-  background-color: #df2424;
-}
-
-.suggestions li[data-engine="en.wikipedia.org"] {
-  background-color: #24dddf;
 }
 
 .suggestions li span {

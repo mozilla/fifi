@@ -32,6 +32,16 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         wrapper.find('.suggestions').append(res);
       });
     } else {
+      for (var i in autoset.results) {
+       // setTimeout(function () {
+          socket.emit('api/suggestImage', {
+            location: geo.getLastLocation(),
+            engineId: 'google.com',
+            term: i
+          });
+       // }, 1);
+      }
+
       autoset.generate(results, data.engineId, function () {
         nunjucks.render('results.html', {
           engineSet: autoset.engines,
@@ -40,6 +50,16 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           wrapper.find('.suggestions').html(res);
         });
       });
+    }
+  });
+
+  socket.on('api/suggestImageDone', function (data) {
+    console.log('GOT api/suggestImageDone: ', data.term);
+
+    if (data.result.items && data.result.items[0].pagemap.cse_image) {
+      wrapper.find('.suggestions li[data-term="' + data.term + '"]')
+             .css('background-image',
+                  'url(' + data.result.items[0].pagemap.cse_image[0].src + ')');
     }
   });
 
