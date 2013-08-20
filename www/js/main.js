@@ -80,9 +80,10 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           switch (data.engineId) {
             case 'google.com':
               var link = data.result && data.result.items;
+              var rest = [];
 
               if (link) {
-                var list = data.result.items, rest = [];
+                var list = data.result.items;
 
                 for (var index = 0, item; item = list[index]; index += 1) {
                   if ('en.wikipedia.org' === item.displayLink) {
