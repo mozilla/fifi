@@ -231,9 +231,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     wrapper.find('#suggestions').html(res);
   });
 
-  wrapper.on('keyup', '#fifi-find', function (ev) {
-    ev.preventDefault();
-
+  wrapper.on('keydown', '#fifi-find', function (ev) {
     var value = $(ev.target).val().toString();
 
     autoset.engineClear();
