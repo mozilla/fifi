@@ -60,11 +60,28 @@ a {
 }
 
 #wrapper {
-  height: 1024px;
-  margin: 0 auto;
   padding: 0;
   position: relative;
-  width: 768px;
+  width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For portrait layouts only */
+  #wrapper {
+    height: 1024px;
+  }
+  #fifi-find-box {
+    left: 191px; /* 768 / 2 = 384 - (386 / 2 = 193) = 191 */
+  }
+}
+@media only screen and (min-width: 1024px) {
+  /* For landscape layouts only */
+  #wrapper {
+    height: 768px;
+  }
+  #fifi-find-box {
+    left: 319px; /* 1024 / 2 = 512 - (386 / 2 = 193) = 319 */
+  }
 }
 
 #fifi-find-box {
@@ -103,7 +120,7 @@ a {
 #geolocation-box {
   font-size: 18px;
   line-height: 25px;
-  width: 382px; /* 380 + 1px border * 2 */
+  width: 386px; /* 380 + 1px border * 2 + 2px padding * 2 */
   vertical-align: top;
   text-align: right;
   display: block;
@@ -128,19 +145,6 @@ a {
 }
 #geolocation:active {
   color: #444;
-}
-
-@media only screen and (width: 768px) {
-  /* For portrait layouts only */
-  #fifi-find-box {
-    left: 194px; /* 768 / 2 = 384 - (380 / 2 = 190) = 194 */
-  }
-}
-@media only screen and (width: 1024px) {
-  /* For landscape layouts only */
-  #fifi-find-box {
-    left: 322px; /* 1024 / 2 = 512 - (380 / 2 = 190) = 322 */
-  }
 }
 
 #suggestions,
