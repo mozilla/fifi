@@ -1,8 +1,8 @@
 {% if found > 0 %}
   {% for k, v in engineSet %}
-    {% for c in v.concepts %}
+    {% for c in v.conceptsPrimary %}
       {% if c.concept %}
-        <li data-term="{{ c.concept }}" data-action="concept" data-engine="{{ k }}">
+        <li class="primary" data-term="{{ c.concept }}" data-action="concept" data-engine="{{ k }}">
           <span>{{ c.concept }}</span>
         </li>
       {% endif %}

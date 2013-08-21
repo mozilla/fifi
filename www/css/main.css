@@ -163,7 +163,7 @@ a {
   float: left;
 }
 
-.suggestions li {
+.suggestions li, .suggestions-secondary li {
   background-color: #111;
   background-size: cover;
   background-repeat: no-repeat;
@@ -177,7 +177,7 @@ a {
   width: 182px;
 }
 
-.suggestions li span {
+.suggestions li span, .suggestions-secondary li span {
   bottom: 0;
   display: block;
   font-size: 17px;
@@ -186,6 +186,14 @@ a {
   position: absolute;
   text-align: center;
   width: 175px;
+}
+
+.suggestions li.primary {
+  background-color: #aaa;
+}
+
+.suggestions-secondary li.secondary {
+  background-color: #555;
 }
 
 #definition,

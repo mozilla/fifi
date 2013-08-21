@@ -8,16 +8,20 @@ define(['./utils'], function (utils) {
       this.results = {};
       this.engines = {
         'google.com': {
-          concepts: []
+          conceptsPrimary: [],
+          conceptsSecondary: []
         },
         'amazon.com': {
-          concepts: []
+          conceptsPrimary: [],
+          conceptsSecondary: []
         },
         'yelp.com': {
-          concepts: []
+          conceptsPrimary: [],
+          conceptsSecondary: []
         },
         'en.wikipedia.org': {
-          concepts: []
+          conceptsPrimary: [],
+          conceptsSecondary: []
         }
       };
     };
@@ -33,9 +37,32 @@ define(['./utils'], function (utils) {
 
           val = val.toString().toLowerCase();
 
-          if (!this.results[val] && val.length > 0 && this.engines[engineId].concepts.length < 3) {
+          if (!this.results[val] && val.length > 0 && this.engines[engineId].conceptsPrimary.length < 3) {
             this.results[val] = true;
-            this.engines[engineId].concepts.push({
+            this.engines[engineId].conceptsPrimary.push({
+              concept: val
+            });
+          }
+
+          if (count === value.length - 1) {
+            callback(true);
+          }
+        }
+      }
+    };
+
+    this.generateSecondary = function (value, engineId, callback) {
+      if (value) {
+        var count = 0;
+
+        for (var i = 0, val; val = value[i]; i += 1) {
+          count ++;
+
+          val = val.toString().toLowerCase();
+
+          if (!this.results[val] && val.length > 0 && this.engines[engineId].conceptsSecondary.length < 3) {
+            this.results[val] = true;
+            this.engines[engineId].conceptsSecondary.push({
               concept: val
             });
           }

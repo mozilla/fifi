@@ -23,14 +23,16 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     socket.emit('api/suggestDone/' + data.engineId, data);
 
     var results = data.result;
-
+    console.log(data.engineId, results)
     if (results === 'undefined') {
+      /*
       nunjucks.render('results.html', {
         engineSet: {},
         found: 0
       }, function (err, res) {
         wrapper.find('.suggestions').append(res);
       });
+*/
     } else {
       /*
       for (var i in autoset.results) {
@@ -41,15 +43,27 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         });
       }
       */
-
-      autoset.generate(results, data.engineId, function () {
-        nunjucks.render('results.html', {
-          engineSet: autoset.engines,
-          found: utils.keySize(autoset.engines)
-        }, function (err, res) {
-          wrapper.find('.suggestions').html(res);
+      console.log(data.engineId, data.secondary, data.term)
+      if (data.secondary) {
+        autoset.generateSecondary(results, data.engineId, function () {
+          nunjucks.render('results_secondary.html', {
+            engineSet: autoset.engines,
+            found: utils.keySize(autoset.engines)
+          }, function (err, res) {
+            wrapper.find('.suggestions-secondary').html(res);
+          });
         });
-      });
+      } else {
+        autoset.generate(results, data.engineId, function () {
+          console.log(autoset.engines)
+          nunjucks.render('results.html', {
+            engineSet: autoset.engines,
+            found: utils.keySize(autoset.engines)
+          }, function (err, res) {
+            wrapper.find('.suggestions').html(res);
+          });
+        });
+      }
     }
   });
 
@@ -68,162 +82,156 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
     var engine = autoset.engines[lastEngine];
 
-    for (var i = 0; i < engine.concepts.length; i ++) {
-      if (engine.concepts[i].concept === data.term) {
-        nunjucks.render('result.html', {
-          engineId: data.engineId
-        }, function (err, res) {
-          wrapper.find('#details-list').append(res);
-          var defList = wrapper.find('#definition-links');
-          var defVideos = wrapper.find('#definition-videos');
+    nunjucks.render('result.html', {
+      engineId: data.engineId
+    }, function (err, res) {
+      wrapper.find('#details-list').append(res);
+      var defList = wrapper.find('#definition-links');
+      var defVideos = wrapper.find('#definition-videos');
 
-          switch (data.engineId) {
-            case 'google.com':
-              var link = data.result && data.result.items;
-              var rest = [];
+      switch (data.engineId) {
+        case 'google.com':
+          var link = data.result && data.result.items;
+          var rest = [];
 
-              if (link) {
-                var list = data.result.items;
+          if (link) {
+            var list = data.result.items;
 
-                for (var index = 0, item; item = list[index]; index += 1) {
-                  if ('en.wikipedia.org' === item.displayLink) {
-                    defList.append(
-                      $('<li class="wikipedia icon"/>').append(
-                        $('<a/>').text(item.title.replace(' - Wikipedia, the free encyclopedia', '')).attr('href', item.link)
-                        )
-                      );
-                  } else if ('twitter.com' === item.displayLink) {
-                    defList.append(
-                      $('<li class="twitter icon"/>').append(
-                        $('<a/>').text(item.link.replace(/http(s)?:\/\/twitter\.com\//,'')).attr('href', item.link)
-                        )
-                      );
-                  // locate a vimeo user account
-                  } else if ('vimeo.com' === item.displayLink) {
-                    defList.append(
-                      $('<li class="vimeo icon"/>').append(
-                        $('<a/>').text(item.title.replace('on Vimeo', '')).attr('href', item.link)
-                        )
-                      );
-                  // Locate a facebook page for result
-                  } else if ('www.facebook.com' === item.displayLink) {
-                    defList.append(
-                      $('<li class="facebook icon"/>').append(
-                        $('<a/>').text(item.title.replace('| Facebook', '')).attr('href', item.link)
-                        )
-                      );
-                  // find a YouTube user account
-                  } else if (item.formattedUrl.indexOf('www.youtube.com/user/') === 0) {
-                    defList.append(
-                      $('<li class="youtube icon"/>').append(
-                        $('<a/>').text(item.title.replace('- YouTube', '')).attr('href', item.link)
-                        )
-                      );
-                  // this will just find youtube videos that might be useful
-                  } else if ('www.youtube.com' === item.displayLink) {
-                    defVideos.append(
-                      $('<li/>').append(
-                        $('<a/>').attr('href', item.link).append(
-                          $('<img/>').css({ 'width' : 140, 'height' : 100 }).attr("src", "http://placehold.it/140x100")
-                          )
-                        )
-                      );
-                 } else if ('www.amazon.com' === item.displayLink) {
-                    // we don't want amazon results showing up as they
-                    // will be duplicates of what Amazon gives us
-                    // defList.append(
-                    //   $('<li/>').append(
-                    //     $('<a/>').text(item.title).attr('href', item.link)
-                    //     )
-                    //   );
-                 } else if ('www.yelp.com' === item.displayLink) {
-                    // we don't want yelp results showing up as they
-                    // will be duplicates of what Amazon gives us
-                    // defList.append(
-                    //   $('<li/>').append(
-                    //     $('<a/>').text(item.title).attr('href', item.link)
-                    //     )
-                    //   );
-                  } else {
-                    rest.push(item);
-                  }
-                }
-              }
-              var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
-
-              rest.forEach(function (item, index, list) {
-                content.append(
-                  $('<div class="result-item"/>').append(
-                    $('<a class="result-title"/>').html(item.htmlTitle).attr('href', item.link),
-                    $('<a class="result-url"/>').text(item.formattedUrl),
-                    $('<p class="result-snippet"/>').html(item.htmlSnippet)
-                    )
-                  )
-              });
-
-              break;
-
-            case 'amazon.com':
-              var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
-              var product = data.result && data.result.length;
-
-              if (product) {
-                data.result.every(function (item, index) {
-                  if (item.detailpageurl && item.itemattributes) {
-                  content.append(
-                    $('<div class="result-item"/>').append(
-                      $('<a class="result-title"/>').attr('href', item.detailpageurl[0]).text(item.itemattributes[0].title[0]),
-                      $('<p class="result-snippet"/>').html((item.itemattributes[0].feature)? item.itemattributes[0].feature[0] : '')
-                      )
-                    );
-                  }
-                  if (index > 4) {
-                    return false;
-                  } else {
-                    return true;
-                  }
-                });
-              }
-              break;
-
-            case 'yelp.com':
-              var businesses = data.result && data.result.businesses;
-              var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
-
-              if (businesses) {
-               businesses.every(function (item, index) {
-                content.append(
-                  $('<div class="result-item cf"/>').append(
-                    $('<img class="result-image"/>').attr('src', item.image_url),
-                    $('<a class="result-title"/>').attr('href', item.url).text(item.name),
-                    $('<p class="result-snippet"/>').text(item.snippet_text)
+            for (var index = 0, item; item = list[index]; index += 1) {
+              if ('en.wikipedia.org' === item.displayLink) {
+                defList.append(
+                  $('<li class="wikipedia icon"/>').append(
+                    $('<a/>').text(item.title.replace(' - Wikipedia, the free encyclopedia', '')).attr('href', item.link)
                     )
                   );
-                  if (index > 4) {
-                    return false;
-                  } else {
-                    return true;
-                  }
-                });
+              } else if ('twitter.com' === item.displayLink) {
+                defList.append(
+                  $('<li class="twitter icon"/>').append(
+                    $('<a/>').text(item.link.replace(/http(s)?:\/\/twitter\.com\//,'')).attr('href', item.link)
+                    )
+                  );
+              // locate a vimeo user account
+              } else if ('vimeo.com' === item.displayLink) {
+                defList.append(
+                  $('<li class="vimeo icon"/>').append(
+                    $('<a/>').text(item.title.replace('on Vimeo', '')).attr('href', item.link)
+                    )
+                  );
+              // Locate a facebook page for result
+              } else if ('www.facebook.com' === item.displayLink) {
+                defList.append(
+                  $('<li class="facebook icon"/>').append(
+                    $('<a/>').text(item.title.replace('| Facebook', '')).attr('href', item.link)
+                    )
+                  );
+              // find a YouTube user account
+              } else if (item.formattedUrl.indexOf('www.youtube.com/user/') === 0) {
+                defList.append(
+                  $('<li class="youtube icon"/>').append(
+                    $('<a/>').text(item.title.replace('- YouTube', '')).attr('href', item.link)
+                    )
+                  );
+              // this will just find youtube videos that might be useful
+              } else if ('www.youtube.com' === item.displayLink) {
+                defVideos.append(
+                  $('<li/>').append(
+                    $('<a/>').attr('href', item.link).append(
+                      $('<img/>').css({ 'width' : 140, 'height' : 100 }).attr("src", "http://placehold.it/140x100")
+                      )
+                    )
+                  );
+             } else if ('www.amazon.com' === item.displayLink) {
+                // we don't want amazon results showing up as they
+                // will be duplicates of what Amazon gives us
+                // defList.append(
+                //   $('<li/>').append(
+                //     $('<a/>').text(item.title).attr('href', item.link)
+                //     )
+                //   );
+             } else if ('www.yelp.com' === item.displayLink) {
+                // we don't want yelp results showing up as they
+                // will be duplicates of what Amazon gives us
+                // defList.append(
+                //   $('<li/>').append(
+                //     $('<a/>').text(item.title).attr('href', item.link)
+                //     )
+                //   );
+              } else {
+                rest.push(item);
               }
-              break;
+            }
+          }
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
 
-            case 'en.wikipedia.org':
-              var article = data.result;
+          rest.forEach(function (item, index, list) {
+            content.append(
+              $('<div class="result-item"/>').append(
+                $('<a class="result-title"/>').html(item.htmlTitle).attr('href', item.link),
+                $('<a class="result-url"/>').text(item.formattedUrl),
+                $('<p class="result-snippet"/>').html(item.htmlSnippet)
+                )
+              )
+          });
 
-              if (article) {
-                wrapper.find('#definition-text').html(article);
+          break;
+
+        case 'amazon.com':
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
+          var product = data.result && data.result.length;
+
+          if (product) {
+            data.result.every(function (item, index) {
+              if (item.detailpageurl && item.itemattributes) {
+              content.append(
+                $('<div class="result-item"/>').append(
+                  $('<a class="result-title"/>').attr('href', item.detailpageurl[0]).text(item.itemattributes[0].title[0]),
+                  $('<p class="result-snippet"/>').html((item.itemattributes[0].feature)? item.itemattributes[0].feature[0] : '')
+                  )
+                );
               }
-              break;
+              if (index > 4) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+          }
+          break;
 
-            default:
-              break;
-          };
-        });
+        case 'yelp.com':
+          var businesses = data.result && data.result.businesses;
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
 
-        break;
-      }
-    }
+          if (businesses) {
+           businesses.every(function (item, index) {
+            content.append(
+              $('<div class="result-item cf"/>').append(
+                $('<img class="result-image"/>').attr('src', item.image_url),
+                $('<a class="result-title"/>').attr('href', item.url).text(item.name),
+                $('<p class="result-snippet"/>').text(item.snippet_text)
+                )
+              );
+              if (index > 4) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+          }
+          break;
+
+        case 'en.wikipedia.org':
+          var article = data.result;
+
+          if (article) {
+            wrapper.find('#definition-text').html(article);
+          }
+          break;
+
+        default:
+          break;
+      };
+    });
   });
 
   // Load initial search template
@@ -236,12 +244,14 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
     autoset.engineClear();
     wrapper.find('.suggestions').empty();
+    wrapper.find('.suggestions-secondary').empty();
 
-    if (value.length > 0) {
+    if (value.length > 1) {
       lastTerm = value;
       socket.emit('api/find', { term: value, location: geo.getLastLocation() });
     } else {
       wrapper.find('.suggestions').empty();
+      wrapper.find('.suggestions-secondary').empty();
     }
   });
 
