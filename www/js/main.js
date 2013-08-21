@@ -32,15 +32,15 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         wrapper.find('.suggestions').append(res);
       });
     } else {
+      /*
       for (var i in autoset.results) {
-       // setTimeout(function () {
-          socket.emit('api/suggestImage', {
-            location: geo.getLastLocation(),
-            engineId: 'google.com',
-            term: i
-          });
-       // }, 1);
+        socket.emit('api/suggestImage', {
+          location: geo.getLastLocation(),
+          engineId: 'google.com',
+          term: i
+        });
       }
+      */
 
       autoset.generate(results, data.engineId, function () {
         nunjucks.render('results.html', {
