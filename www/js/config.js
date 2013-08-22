@@ -4,7 +4,8 @@ requirejs.config({
     'jquery': 'lib/jquery',
     'nunjucks': 'lib/nunjucks',
     'socket.io': 'lib/socket.io',
-    'async': 'lib/async'
+    'async': 'lib/async',
+    'debounce': 'lib/debounce'
   },
   shim: {
     'jquery': {
@@ -15,6 +16,9 @@ requirejs.config({
     },
     'socket.io': {
       exports: 'io'
-    }
+    },
+    'debounce': [
+      'jquery'
+    ]
   }
 });

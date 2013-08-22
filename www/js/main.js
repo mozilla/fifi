@@ -1,6 +1,6 @@
-define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
+define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/utils',
   'base/geo', 'nunjucks', 'templates'],
-  function ($, io, find, Autoset, utils, geo, nunjucks, templates) {
+  function ($, io, debounce, find, Autoset, utils, geo, nunjucks, templates) {
   'use strict';
 
   var wrapper = $('#wrapper');
@@ -272,7 +272,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   });
 
   find.keydown(function () {
-    $.debounce(250, sendRequestSecond);
+    $.debounce(700, sendRequestSecond);
   });
 
   sendRequestFirst();
