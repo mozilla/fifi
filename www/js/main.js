@@ -4,6 +4,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   'use strict';
 
   var wrapper = $('#wrapper');
+  var find = $('#fifi-find');
 
   var inResults = false;
   var socketUrl = location.hash.indexOf('dev') === -1 ?
@@ -234,26 +235,48 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     });
   });
 
-  // Load initial search template
-  nunjucks.render('suggest.html', function (err, res) {
-    wrapper.find('#suggestions').html(res);
-  });
+  var debounceFirst = 0;
+  var debounceSecond = 0;
 
-  wrapper.on('keydown', '#fifi-find', function (ev) {
-    var value = $(ev.target).val().toString();
+  function makeRequest() {
+    var value = find.val().toString();
 
     autoset.engineClear();
-    wrapper.find('.suggestions').empty();
-    wrapper.find('.suggestions-secondary').empty();
+    wrapper.find('.suggestions, .suggestions-secondary').empty();
 
     if (value.length > 1) {
       lastTerm = value;
       socket.emit('api/find', { term: value, location: geo.getLastLocation() });
     } else {
-      wrapper.find('.suggestions').empty();
-      wrapper.find('.suggestions-secondary').empty();
+      wrapper.find('.suggestions, .suggestions-secondary').empty();
     }
+  }
+
+  function sendRequestFirst() {
+    makeRequest();
+    debounceFirst ++;
+  }
+
+  function sendRequestSecond() {
+    makeRequest();
+    debounceSecond ++;
+  }
+
+  // Load initial search template
+  nunjucks.render('suggest.html', function (err, res) {
+    wrapper.find('#suggestions').html(res);
   });
+
+  find.keydown(function () {
+    sendRequestFirst();
+  });
+
+  find.keydown(function () {
+    $.debounce(250, sendRequestSecond);
+  });
+
+  sendRequestFirst();
+  sendRequestSecond();
 
   wrapper.find('#fifi-find').one('focus', function () {
     wrapper.find('#fifi-find-box')
