@@ -1,4 +1,4 @@
-define(['async!//maps.googleapis.com/maps/api/js?sensor=true'], function () {
+define(['jquery', 'async!//maps.googleapis.com/maps/api/js?sensor=true'], function ($) {
   'use strict';
 
   var storage = window.localStorage;
@@ -12,17 +12,25 @@ define(['async!//maps.googleapis.com/maps/api/js?sensor=true'], function () {
   var haveCurrentPosition = false;
 
   var lastLocation = '';
+  var lastPosition = null;
   var $node;
+
+  var eventObject = new Object();
 
   // ID for watchCurrentPosition() call
   var watchId = null;
 
   function geolocationSuccess (position) {
     storage.haveRequestedLocation = PERMISSION_GRANTED;
+
+    lastPosition = position;
+
     // borrowed from
     // https://gist.github.com/larryrubin/2593322#file-phonegap_reverse_geo_lookup-html
     var lat = parseFloat(position.coords.latitude);
     var lng = parseFloat(position.coords.longitude);
+
+    $(eventObject).trigger('geolocation');
 
     geocoder.geocode({ 'latLng': new google.maps.LatLng(lat, lng) }, function (results, status) {
       if (results && status === google.maps.GeocoderStatus.OK) {
@@ -102,6 +110,9 @@ define(['async!//maps.googleapis.com/maps/api/js?sensor=true'], function () {
     getLastLocation: function () {
       return lastLocation;
     },
+    getLastPosition: function () {
+      return lastPosition;
+    },
     getCurrentPosition: function (obj) {
       if ("geolocation" in navigator) {
         if (!this.hasCurrentPosition()) {
@@ -112,6 +123,15 @@ define(['async!//maps.googleapis.com/maps/api/js?sensor=true'], function () {
     },
     haveGeolocationPermission: function () {
       return (typeof storage.haveRequestedLocation !== 'undefined' && storage.haveRequestedLocation === PERMISSION_GRANTED);
+    },
+    on: function(name, callback) {
+      $(eventObject).on(name, callback);
+    },
+    off: function(name, callback) {
+      $(eventObject).off(name, callback);
+    },
+    trigger: function(name) {
+      $(eventObject).trigger(name);
     }
   };
 });

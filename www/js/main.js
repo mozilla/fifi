@@ -86,7 +86,11 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     nunjucks.render('result.html', {
       engineId: data.engineId
     }, function (err, res) {
-      wrapper.find('#details-list').append(res);
+      // ignore the wikipedia entry for now
+      if (data.engineId !== 'en.wikipedia.org') {
+        wrapper.find('#details-list').append(res);
+      }
+
       var defList = wrapper.find('#definition-links');
       var defVideos = wrapper.find('#definition-videos');
 
@@ -283,6 +287,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
            .addClass('fifi-find-box-focused')
            .find('#geolocation-box')
            .addClass('geolocation-box-focused');
+    wrapper.find('#bgImg').addClass('fifi-find-box-focused');
     geo.startWatchingPosition(wrapper.find('#geolocation-name'));
   });
 
@@ -306,6 +311,29 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
   if (geo.haveGeolocationPermission()) {
     geo.startWatchingPosition(wrapper.find('#geolocation-name'));
   }
+
+  geo.on('geolocation', function geoImg() {
+    // only call this function once
+    geo.off('geolocation', geoImg);
+
+    var img = $("#bgImg");
+    var API_KEY = "bcef359dcec703ca6580b92c5682f9f9";
+    // popular tags via http://www.flickr.com/photos/tags/
+    var url = encodeURI("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+ API_KEY + "&tags=architecture,sky,nature,travel&safe_search=1&per_page=40");
+    var position = geo.getLastPosition();
+    var lat = parseFloat(position.coords.latitude, 10);
+    var lng = parseFloat(position.coords.longitude, 10);
+    url += "&lat="+lat + "&lon=" + lng;
+    var src;
+    $.getJSON(url + "&format=json&jsoncallback=?", function(data){
+      var count = data.photos.photo.length;
+      var randomIndex = Math.floor(Math.random()*count);
+      var item = data.photos.photo[randomIndex];
+      var src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_b.jpg";
+      console.log("SRC", 'url(' + src + ');');
+      $(img).css("background-image", 'url(' + src + ')');
+    });
+  });
 
   wrapper.on('touchstart click', function (ev) {
     var self = $(ev.target);

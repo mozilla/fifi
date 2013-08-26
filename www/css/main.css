@@ -63,11 +63,37 @@ a {
   padding: 0;
   position: relative;
   width: 100%;
+  z-index: 1;
+}
+
+#bgImg {
+  z-index: -1;
+  position:absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#bgImg.fifi-find-box-focused {
+  -webkit-transition-delay: 1s;
+     -moz-transition-delay: 1s;
+          transition-delay: 1s;
+
+  -webkit-filter: blur(2px) grayscale(1.0) opacity(0.5);
+     -moz-filter: blur(2px) grayscale(1.0) opacity(0.5);
+          filter: blur(2px) grayscale(1.0) opacity(0.5);
+
+  -webkit-transition: -webkit-filter .50s;
+     -moz-transition: -moz-filter .50s;
+          transition: filter .50s;
 }
 
 @media only screen and (min-width: 768px) {
   /* For portrait layouts only */
-  #wrapper {
+  #wrapper,
+  #bgImg {
     height: 1024px;
   }
   #fifi-find-box {
@@ -76,7 +102,8 @@ a {
 }
 @media only screen and (min-width: 1024px) {
   /* For landscape layouts only */
-  #wrapper {
+  #wrapper,
+  #bgImg {
     height: 768px;
   }
   #fifi-find-box {
@@ -93,34 +120,31 @@ a {
 }
 
 #fifi-find-box.fifi-find-box-focused {
-  top: 6px;
-  left: 3px;
+  top: 5px;
+  left: 5px;
   height: 40px;
 }
 
 #fifi-find {
   font-size: 18px;
-  height: 30px;
-  padding: 2px;
+  height: 32px;
+  padding: 0 5px;
   width: 380px;
   color: #555;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 2px;
+  background-color: rgba(255,255,255,0.9);
+  border: none;
+  margin: 0;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
 
 #fifi-find:focus {
-  border-color: #66aee9;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
   outline: 0px none;
 }
 
 #geolocation-box {
-  font-size: 18px;
-  line-height: 25px;
-  width: 386px; /* 380 + 1px border * 2 + 2px padding * 2 */
+  width: 380px;
   vertical-align: top;
   text-align: right;
   display: block;
@@ -134,14 +158,16 @@ a {
 
 #geolocation {
   font-size: 14px;
-  line-height: 30px;
+  line-height: 32px;
   color: #888;
   vertical-align: top;
   cursor: pointer;
   background-color: inherit;
   border: none;
   white-space: nowrap;
-  padding: 0;
+  padding: 0 10px;
+  background-color: rgba(255,255,255,0.9);
+  margin: 0;
 }
 #geolocation:active {
   color: #444;
@@ -186,24 +212,40 @@ a {
   line-height: 1.3;
 }
 
-#definition,
-#details-list {
+#details-list,
+#definition {
   vertical-align: top;
-  display: table-cell;
-  padding: 10px;
+  display: inline-block;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For portrait layouts only */
+  #details-list {
+    width: 492px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  /* For landscape layouts only */
+  #details-list {
+    width: 738px;
+  }
 }
 
 #definition {
-  width: 30%;
-}
-
-#details-list {
-  width: 65%;
+  width: 236px;
+  margin: 5px;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 #details-list li {
-  width: 50%;
+  width: 236px;
+  margin: 5px;
+  padding: 5px;
   float: left;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 #definition-text {
