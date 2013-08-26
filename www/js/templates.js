@@ -1,7 +1,4 @@
-(function() {
-var templates = {};
-templates["details.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
+(function() {var templates = {};templates["details.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -16,10 +13,7 @@ cb(null, output);
 return {
 root: root
 };
-
-})();
-templates["result.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
+})();templates["result.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -36,10 +30,7 @@ cb(null, output);
 return {
 root: root
 };
-
-})();
-templates["results.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
+})();templates["results.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -130,10 +121,7 @@ cb(null, output);
 return {
 root: root
 };
-
-})();
-templates["results_secondary.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
+})();templates["results_secondary.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -230,10 +218,7 @@ cb(null, output);
 return {
 root: root
 };
-
-})();
-templates["suggest.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
+})();templates["suggest.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -248,7 +233,5 @@ cb(null, output);
 return {
 root: root
 };
-
-})();
-window.nunjucksPrecompiled = templates;
+})();window.nunjucksPrecompiled = templates;
 })();
