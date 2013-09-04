@@ -84,9 +84,9 @@ a {
 }
 
 #wrapper.fifi-find-box-focused:before {
-  -webkit-filter: blur(2px) grayscale(1.0) opacity(0.5);
-     -moz-filter: blur(2px) grayscale(1.0) opacity(0.5);
-          filter: blur(2px) grayscale(1.0) opacity(0.5);
+  -webkit-filter: blur(4px) grayscale(.75) brightness(25%);
+     -moz-filter: blur(4px) grayscale(.75) brightness(25%);
+          filter: blur(4px) grayscale(.75) brightness(25%);
 
   -webkit-transition: all .5s ease;
      -moz-transition: all .5s ease;
@@ -109,11 +109,19 @@ a {
   #fifi-find-box {
     left: 191px; /* 768 / 2 = 384 - (386 / 2 = 193) = 191 */
   }
+  .suggestions,
+  .suggestions-secondary {
+    width: 384px;
+  }
 }
 @media only screen and (min-width: 1024px) {
   /* For landscape layouts only */
   #wrapper {
     height: 768px;
+  }
+  .suggestions,
+  .suggestions-secondary {
+    width: 512px;
   }
   #fifi-find-box {
     left: 319px; /* 1024 / 2 = 512 - (386 / 2 = 193) = 319 */
@@ -195,28 +203,26 @@ a {
 }
 
 .fifi-suggest {
+  margin-left: 5px;
+}
+
+.suggestions,
+.suggestions-secondary {
+  background-color: #eee;
   float: left;
 }
 
 .suggestions li, .suggestions-secondary li {
   display: block;
-  float: left;
   font-size: 15px;
-  height: 182px;
   margin: 3px;
   position: relative;
-  width: 182px;
 }
 
 .suggestions li span, .suggestions-secondary li span {
   color: #444;
-  bottom: 0;
-  display: block;
-  font-size: 17px;
   overflow: hidden;
   padding: 5px;
-  text-align: center;
-  width: 175px;
   font-size: 32px;
   line-height: 1.3;
 }
