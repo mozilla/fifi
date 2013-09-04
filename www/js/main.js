@@ -287,7 +287,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
            .addClass('fifi-find-box-focused')
            .find('#geolocation-box')
            .addClass('geolocation-box-focused');
-    wrapper.find('#bgImg').addClass('fifi-find-box-focused');
+    wrapper.addClass('fifi-find-box-focused');
     geo.startWatchingPosition(wrapper.find('#geolocation-name'));
   });
 
@@ -316,7 +316,6 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     // only call this function once
     geo.off('geolocation', geoImg);
 
-    var img = $("#bgImg");
     var API_KEY = "bcef359dcec703ca6580b92c5682f9f9";
     // popular tags via http://www.flickr.com/photos/tags/
     var url = encodeURI("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+ API_KEY + "&tags=architecture,sky,nature,travel&safe_search=1&per_page=40");
@@ -330,8 +329,12 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
       var randomIndex = Math.floor(Math.random()*count);
       var item = data.photos.photo[randomIndex];
       var src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_b.jpg";
-      console.log("SRC", 'url(' + src + ');');
-      $(img).css("background-image", 'url(' + src + ')');
+      // it's the only way to :before CSS to the page :(
+      $("body").append(
+        $("<style/>").text(
+          "#wrapper:before { background-image:" + 'url(' + src + ');'  + " } "
+          )
+        );
     });
   });
 

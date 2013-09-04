@@ -66,34 +66,44 @@ a {
   z-index: 1;
 }
 
-#bgImg {
-  z-index: -1;
-  position:absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-size: cover;
+#wrapper:before {
+  content: "";
+  position: absolute;
   background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+  height: 20%; width: 20%;
+
+  -webkit-transform: scale(5);
+     -moz-transform: scale(5);
+          transform: scale(5);
+
+  -webkit-transform-origin: top left;
+     -moz-transform-origin: top left;
+          transform-origin: top left;
 }
 
-#bgImg.fifi-find-box-focused {
-  -webkit-transition-delay: 1s;
-     -moz-transition-delay: 1s;
-          transition-delay: 1s;
-
+#wrapper.fifi-find-box-focused:before {
   -webkit-filter: blur(2px) grayscale(1.0) opacity(0.5);
      -moz-filter: blur(2px) grayscale(1.0) opacity(0.5);
           filter: blur(2px) grayscale(1.0) opacity(0.5);
 
-  -webkit-transition: -webkit-filter .50s;
-     -moz-transition: -moz-filter .50s;
-          transition: filter .50s;
+  -webkit-transition: all .5s ease;
+     -moz-transition: all .5s ease;
+          transition: all .5s ease;
+
+  -webkit-transition-delay: 1s;
+     -moz-transition-delay: 1s;
+          transition-delay: 1s;
+
+  -webkit-transform: scale(5) translateZ(0);
+     -moz-transform: scale(5) translateZ(0);
+          transform: scale(5) translateZ(0);
 }
 
 @media only screen and (min-width: 768px) {
   /* For portrait layouts only */
-  #wrapper,
-  #bgImg {
+  #wrapper {
     height: 1024px;
   }
   #fifi-find-box {
@@ -102,8 +112,7 @@ a {
 }
 @media only screen and (min-width: 1024px) {
   /* For landscape layouts only */
-  #wrapper,
-  #bgImg {
+  #wrapper {
     height: 768px;
   }
   #fifi-find-box {
