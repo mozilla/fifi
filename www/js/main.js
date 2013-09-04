@@ -22,7 +22,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     socket.emit('api/suggestDone/' + data.engineId, data);
 
     var results = data.result;
-    console.log(data.engineId, results)
+
     if (results === 'undefined') {
       /*
       nunjucks.render('results.html', {
@@ -54,7 +54,6 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
         });
       } else {
         autoset.generate(results, data.engineId, function () {
-          console.log(autoset.engines)
           nunjucks.render('results.html', {
             engineSet: autoset.engines,
             found: utils.keySize(autoset.engines)
@@ -248,7 +247,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
 
     if (value.length > 1) {
       lastTerm = value;
-      socket.emit('api/find', { term: value, location: geo.getLastLocation() });
+      socket.emit('api/find', { term: value + ' ', location: geo.getLastLocation() });
     } else {
       wrapper.find('.suggestions, .suggestions-secondary').empty();
     }
@@ -269,12 +268,12 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     wrapper.find('#suggestions').html(res);
   });
 
-  find.keydown(function () {
+  find.keyup(function () {
     sendRequestFirst();
   });
 
-  find.keydown(function () {
-    $.debounce(700, sendRequestSecond);
+  find.keyup(function () {
+    $.debounce(2100, sendRequestSecond);
   });
 
   sendRequestFirst();
