@@ -1,15 +1,13 @@
 define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/utils',
-  'base/geo', 'nunjucks', 'templates'],
-  function ($, io, debounce, find, Autoset, utils, geo, nunjucks, templates) {
+  'base/geo', 'settings', 'nunjucks', 'templates'],
+  function ($, io, debounce, find, Autoset, utils, geo, settings, nunjucks, templates) {
   'use strict';
 
   var wrapper = $('#wrapper');
   var find = $('#fifi-find');
 
   var inResults = false;
-  var socketUrl = location.hash.indexOf('dev') === -1 ?
-    'http://clark-fifi.herokuapp.com/' :
-    'http://127.0.0.1:5000';
+  var socketUrl = settings.SOCKET_URL;
   var socket = io.connect(socketUrl);
   var lastEngine;
   var lastTerm;

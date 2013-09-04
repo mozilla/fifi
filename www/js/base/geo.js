@@ -1,4 +1,4 @@
-define(['jquery', 'async!//maps.googleapis.com/maps/api/js?sensor=true'], function ($) {
+define(['jquery', 'async!http://maps.googleapis.com/maps/api/js?sensor=true'], function ($) {
   'use strict';
 
   var storage = window.localStorage;
@@ -88,7 +88,7 @@ define(['jquery', 'async!//maps.googleapis.com/maps/api/js?sensor=true'], functi
             haveCurrentPosition = false;
             watchId = null;
             $node = null;
-          }        
+          }
         }
       }
     },
@@ -104,7 +104,7 @@ define(['jquery', 'async!//maps.googleapis.com/maps/api/js?sensor=true'], functi
           setNodeText('Location');
           lastLocation = '';
           haveCurrentPosition = false;
-        }        
+        }
       }
     },
     getLastLocation: function () {
