@@ -203,23 +203,28 @@ a {
 }
 
 .fifi-suggest {
-  margin-left: 5px;
 }
 
 .suggestions,
 .suggestions-secondary {
-  background-color: #eee;
+  background-color: #fff;
   float: left;
+  margin-left: 5px;
 }
 
-.suggestions li, .suggestions-secondary li {
+.suggestions-secondary .secondary.term span {
+  color: #888;
+}
+
+.suggestions .primary,
+.suggestions-secondary .secondary {
   display: block;
-  font-size: 15px;
   margin: 3px;
   position: relative;
 }
 
-.suggestions li span, .suggestions-secondary li span {
+.suggestions .primary span,
+.suggestions-secondary .secondary span {
   color: #444;
   overflow: hidden;
   padding: 5px;

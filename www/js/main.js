@@ -42,14 +42,15 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
         });
       }
       */
-      console.log(data.engineId, data.secondary, data.term)
       if (data.secondary) {
         autoset.generateSecondary(results, data.engineId, function () {
           nunjucks.render('results_secondary.html', {
             engineSet: autoset.engines,
-            found: utils.keySize(autoset.engines)
+            found: utils.keySize(autoset.engines),
+            term: data.term
           }, function (err, res) {
-            wrapper.find('.suggestions-secondary').html(res);
+            if (err) console.error(err);
+            else wrapper.find('.suggestions-secondary').html(res);
           });
         });
       } else {
@@ -58,7 +59,8 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
             engineSet: autoset.engines,
             found: utils.keySize(autoset.engines)
           }, function (err, res) {
-            wrapper.find('.suggestions').html(res);
+            if (err) console.error(err);
+            else wrapper.find('.suggestions').html(res);
           });
         });
       }
