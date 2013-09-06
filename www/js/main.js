@@ -232,6 +232,14 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
           }
           break;
 
+        case 'twitter.com':
+          var tweet = data.result;
+
+          if (tweet) {
+            console.log('got tweet ', tweet);
+          }
+          break;
+
         default:
           break;
       };

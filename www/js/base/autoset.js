@@ -22,6 +22,10 @@ define(['./utils'], function (utils) {
         'en.wikipedia.org': {
           conceptsPrimary: [],
           conceptsSecondary: []
+        },
+        'twitter.com': {
+          conceptsPrimary: [],
+          conceptsSecondary: []
         }
       };
     };
