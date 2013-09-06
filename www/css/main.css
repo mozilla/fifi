@@ -68,19 +68,17 @@ a {
 
 #wrapper:before {
   content: "";
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
+  background-clip: border-box;
+  background-attachment: fixed;
   z-index: -1;
-  height: 20%; width: 20%;
-
-  -webkit-transform: scale(5);
-     -moz-transform: scale(5);
-          transform: scale(5);
-
-  -webkit-transform-origin: top left;
-     -moz-transform-origin: top left;
-          transform-origin: top left;
+  height: 100%;
+  width: 100%;
 }
 
 #wrapper.fifi-find-box-focused:before {
@@ -101,7 +99,7 @@ a {
           transform: scale(5) translateZ(0);
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
   /* For portrait layouts only */
   #wrapper {
     height: 1024px;
@@ -114,7 +112,7 @@ a {
     width: 384px;
   }
 }
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
   /* For landscape layouts only */
   #wrapper {
     height: 768px;
