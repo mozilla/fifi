@@ -105,7 +105,8 @@ a {
     height: 1024px;
   }
   #fifi-find-box {
-    left: 191px; /* 768 / 2 = 384 - (386 / 2 = 193) = 191 */
+    top: 492px; /* 1024 / 2 = 512 - (40px / 2 = 20) = 492 */
+    left: 194px; /* 768 / 2 = 384 - (380 / 2 = 190) = 194 */
   }
   .suggestions,
   .suggestions-secondary {
@@ -122,14 +123,14 @@ a {
     width: 512px;
   }
   #fifi-find-box {
-    left: 319px; /* 1024 / 2 = 512 - (386 / 2 = 193) = 319 */
+    top: 364px; /* 768 / 2 = 384 - (40px / 2 = 20) = 364 */
+    left: 322px; /* 1024 / 2 = 512 - (380 / 2 = 190) = 322 */
   }
 }
 
 #fifi-find-box {
   position: absolute;
   top: 40%;
-  width: 100%;
   transition: top 0.5s, left 0.5s;
   -webkit-transition: top 0.5s, left 0.5s;
 }
@@ -138,6 +139,7 @@ a {
   top: 5px;
   left: 5px;
   height: 40px;
+  width: auto;
 }
 
 #fifi-find {
