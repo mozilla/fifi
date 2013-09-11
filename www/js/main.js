@@ -32,7 +32,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       }, function (err, res) {
         wrapper.find('.suggestions').append(res);
       });
-*/
+      */
     } else {
       /*
       for (var i in autoset.results) {

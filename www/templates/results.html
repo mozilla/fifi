@@ -3,7 +3,7 @@
     {% for c in v.conceptsPrimary %}
       {% if c.concept %}
         <li class="primary" data-term="{{ c.concept }}" data-action="concept" data-engine="{{ k }}">
-          <span>{{ c.concept }}</span>
+          <span data-term="{{ c.concept }}" data-action="concept">{{ c.concept }}</span>
         </li>
       {% endif %}
     {% endfor %}
