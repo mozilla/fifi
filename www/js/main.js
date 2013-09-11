@@ -1,6 +1,6 @@
-define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/utils',
+define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   'base/geo', 'settings', 'nunjucks', 'templates'],
-  function ($, io, debounce, find, Autoset, utils, geo, settings, nunjucks, templates) {
+  function ($, io, find, Autoset, utils, geo, settings, nunjucks, templates) {
   'use strict';
 
   var wrapper = $('#wrapper');
@@ -22,6 +22,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     socket.emit('api/suggestDone/' + data.engineId, data);
 
     var results = data.result;
+    var value = find.val().toString();
 
     if (results === 'undefined') {
       /*
@@ -43,26 +44,30 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
       }
       */
       if (data.secondary) {
-        autoset.generateSecondary(results, data.engineId, function () {
-          nunjucks.render('results_secondary.html', {
-            engineSet: autoset.engines,
-            found: utils.keySize(autoset.engines),
-            term: data.term
-          }, function (err, res) {
-            if (err) console.error(err);
-            else wrapper.find('.suggestions-secondary').html(res);
+        if (value === data.originalTerm) {
+          autoset.generateSecondary(value, results, data.engineId, function () {
+            nunjucks.render('results_secondary.html', {
+              engineSet: autoset.engines,
+              found: utils.keySize(autoset.engines),
+              term: data.term
+            }, function (err, res) {
+              if (err) console.error(err);
+              else wrapper.find('.suggestions-secondary').html(res);
+            });
           });
-        });
+        }
       } else {
-        autoset.generate(results, data.engineId, function () {
-          nunjucks.render('results.html', {
-            engineSet: autoset.engines,
-            found: utils.keySize(autoset.engines)
-          }, function (err, res) {
-            if (err) console.error(err);
-            else wrapper.find('.suggestions').html(res);
+        if (value === data.term) {
+          autoset.generate(value, results, data.engineId, function () {
+            nunjucks.render('results.html', {
+              engineSet: autoset.engines,
+              found: utils.keySize(autoset.engines)
+            }, function (err, res) {
+              if (err) console.error(err);
+              else wrapper.find('.suggestions').html(res);
+            });
           });
-        });
+        }
       }
     }
   });
@@ -246,52 +251,30 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     });
   });
 
-  var debounceFirst = 0;
-  var debounceSecond = 0;
-
-  function makeRequest() {
-    var value = find.val().toString();
-
-    autoset.engineClear();
-    wrapper.find('.suggestions, .suggestions-secondary').empty();
-
-    if (value.length > 1) {
-      lastTerm = value;
-      socket.emit('api/find', {
-        term: value,
-        location: geo.getLastLocation(),
-        geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude
-      });
-    } else {
-      wrapper.find('.suggestions, .suggestions-secondary').empty();
-    }
-  }
-
-  function sendRequestFirst() {
-    makeRequest();
-    debounceFirst ++;
-  }
-
-  function sendRequestSecond() {
-    makeRequest();
-    debounceSecond ++;
-  }
-
   // Load initial search template
   nunjucks.render('suggest.html', function (err, res) {
     wrapper.find('#suggestions').html(res);
   });
 
-  find[0].addEventListener('input', function () {
-    sendRequestFirst();
-  });
+  find.get(0).addEventListener('input', function (ev) {
+    var value = find.val().toString();
 
-  find[0].addEventListener('input', function () {
-    $.debounce(500, sendRequestSecond);
-  });
+    // if this is a change in terms or empty string
+    if (lastTerm !== value || value.length < 1) {
+      autoset.engineClear();
+      wrapper.find('.suggestions, .suggestions-secondary').empty();
+    }
 
-  sendRequestFirst();
-  sendRequestSecond();
+    lastTerm = value;
+
+    if (value.length >= 1) {
+      socket.emit('api/find', {
+        term: value,
+        location: geo.getLastLocation(),
+        geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude
+      });
+    }
+  });
 
   wrapper.find('#fifi-find').one('focus', function () {
     wrapper.find('#fifi-find-box')

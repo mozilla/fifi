@@ -6,6 +6,7 @@ define(['./utils'], function (utils) {
 
     this.engineClear = function () {
       this.results = {};
+      this.terms = null;
       this.engines = {
         'google.com': {
           conceptsPrimary: [],
@@ -32,8 +33,12 @@ define(['./utils'], function (utils) {
 
     this.engineClear();
 
-    this.generate = function (value, engineId, callback) {
-      if (value) {
+    this.generate = function (terms, value, engineId, callback) {
+      if (this.terms === null) {
+        this.terms = terms;
+      }
+
+      if (value && this.terms === terms) {
         var count = 0;
 
         for (var i = 0, val; val = value[i]; i += 1) {
@@ -55,8 +60,12 @@ define(['./utils'], function (utils) {
       }
     };
 
-    this.generateSecondary = function (value, engineId, callback) {
-      if (value) {
+    this.generateSecondary = function (terms, value, engineId, callback) {
+      if (this.terms === null) {
+        this.terms = terms;
+      }
+
+      if (value && this.terms === terms) {
         var count = 0;
 
         for (var i = 0, val; val = value[i]; i += 1) {
