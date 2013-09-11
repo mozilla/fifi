@@ -257,7 +257,11 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
 
     if (value.length > 1) {
       lastTerm = value;
-      socket.emit('api/find', { term: value + ' ', location: geo.getLastLocation() });
+      socket.emit('api/find', {
+        term: value,
+        location: geo.getLastLocation(),
+        geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude
+      });
     } else {
       wrapper.find('.suggestions, .suggestions-secondary').empty();
     }
@@ -278,12 +282,12 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
     wrapper.find('#suggestions').html(res);
   });
 
-  find.keyup(function () {
+  find[0].addEventListener('input', function () {
     sendRequestFirst();
   });
 
-  find.keyup(function () {
-    $.debounce(2100, sendRequestSecond);
+  find[0].addEventListener('input', function () {
+    $.debounce(500, sendRequestSecond);
   });
 
   sendRequestFirst();
@@ -361,6 +365,7 @@ define(['jquery', 'socket.io', 'debounce', 'base/find', 'base/autoset', 'base/ut
           socket.emit('api/query', {
             term: self.data('term'),
             location: geo.getLastLocation(),
+            geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
             engineId: engine
           });
         }
