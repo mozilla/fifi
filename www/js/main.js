@@ -310,25 +310,43 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     // only call this function once
     geo.off('geolocation', geoImg);
 
-    var API_KEY = "bcef359dcec703ca6580b92c5682f9f9";
-    // popular tags via http://www.flickr.com/photos/tags/
-    var url = encodeURI("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+ API_KEY + "&tags=architecture,sky,nature,travel&safe_search=1&per_page=40");
     var position = geo.getLastPosition();
     var lat = parseFloat(position.coords.latitude, 10);
     var lng = parseFloat(position.coords.longitude, 10);
-    url += "&lat="+lat + "&lon=" + lng;
-    var src;
-    $.getJSON(url + "&format=json&jsoncallback=?", function(data){
-      var count = data.photos.photo.length;
-      var randomIndex = Math.floor(Math.random()*count);
-      var item = data.photos.photo[randomIndex];
-      var src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_b.jpg";
-      // it's the only way to :before CSS to the page :(
-      $("body").append(
-        $("<style/>").text(
-          "#wrapper:before { background-image:" + 'url(' + src + ');'  + " } "
+
+    var API_KEY = "bcef359dcec703ca6580b92c5682f9f9";
+    // http://www.flickr.com/services/api/flickr.photos.search.html
+    var options = [ 'method=flickr.photos.search',
+                    'api_key=' + API_KEY,
+                    'per_page=20',
+                    // accuracy of location 6 = Region
+                    'accuracy=6',
+                    // popular tags via http://www.flickr.com/photos/tags/
+                    'tags=architecture,sky,nature,travel',
+                    // 1 = photos only, no screenshots etc
+                    'content_type=1',
+                    // 1 = safe
+                    'safe_search=1',
+                    // latt / long
+                    'lat=' + lat,
+                    'lon=' + lng,
+                    'format=json',
+                    'jsoncallback=?'
+                  ].join('&');
+
+    var url = encodeURI("http://api.flickr.com/services/rest/?" + options);
+    $.getJSON(url, function(data){
+      var src;
+      var item = data.photos.photo[Math.floor(Math.random() * data.photos.photo.length)];
+      if (item) {
+        src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_z.jpg";
+        // it's the only way to :before CSS to the page :(
+        $("body").append(
+          $("<style/>").text(
+            "#wrapper:before { background-image:" + 'url(' + src + ');'  + " } "
           )
         );
+      }
     });
   });
 
