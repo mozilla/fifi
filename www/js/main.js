@@ -210,21 +210,53 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         case 'yelp.com':
           var businesses = data.result && data.result.businesses;
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
+          var first, $first, $reviews;
 
           if (businesses) {
+            first = businesses.pop();
+            $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.image_url || '').replace(/ms.jpg$/, "l.jpg") + ')' }).appendTo(content);
+            $reviews = $('<div class="result-reviews"/>');
+            for (var i = 0; i < 5; i += 1) {
+              if (i < first.rating) {
+                $reviews.append($('<i class="icon-star"></i>'));
+              } else {
+                $reviews.append($('<i class="icon-star-empty"></i>'));
+              }
+            }
+            // need a bit of space between stars and # of reviews
+            $reviews.append(" ");
+            $first.append(
+              $('<div class="result-header-info"/>').append(
+                $('<p class="result-title"/>').text(first.name),
+                $('<p class="result-address"/>').text(first.location.address.pop()),
+                $('<a class="result-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
+                $reviews.append($('<span/>').text(first.review_count + " reviews"))
+              )
+            );
            businesses.every(function (item, index) {
+            var $reviews = $('<div class="result-reviews"/>');
+            for (var i = 0; i < 5; i += 1) {
+              if (i < item.rating) {
+                $reviews.append($('<i class="icon-star"></i>'));
+              } else {
+                $reviews.append($('<i class="icon-star-empty"></i>'));
+              }
+            }
             content.append(
               $('<div class="result-item cf"/>').append(
-                $('<img class="result-image"/>').attr('src', item.image_url),
-                $('<a class="result-title"/>').attr('href', item.url).text(item.name),
-                $('<p class="result-snippet"/>').text(item.snippet_text)
+                $('<img class="result-image"/>').attr('src', (item.image_url || '')),
+                $('<div class="result-info"/>').append(
+                  $('<p class="result-title"/>').text(item.name),
+                  $reviews,
+                  $('<span class="result-reviews"/>').text(first.review_count + " reviews")
                 )
-              );
-              if (index > 4) {
-                return false;
-              } else {
-                return true;
-              }
+              )
+            );
+            if (index > 4) {
+              return false;
+            } else {
+              return true;
+            }
             });
           }
           break;
