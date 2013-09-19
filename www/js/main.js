@@ -224,8 +224,15 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.image_url || '').replace(/ms.jpg$/, "l.jpg") + ')' }).appendTo(content);
             $reviews = $('<div class="result-header-reviews"/>');
             for (var i = 0; i < 5; i += 1) {
-              if (i < first.rating) {
+              if (i < Math.floor(first.rating)) {
                 $reviews.append($('<i class="icon-star"></i>'));
+              } else if (i < first.rating) {
+                $reviews.append(
+                  $('<div class="icon-star-half-colored"/>').append(
+                    $('<i class="icon-star-half"></i>'),
+                    $('<i class="icon-star-half-empty"></i>')
+                  )
+                );
               } else {
                 $reviews.append($('<i class="icon-star-empty"></i>'));
               }
@@ -240,11 +247,19 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
               )
             );
-           businesses.slice(0, Math.min(5, businesses.length)).forEach(function (item) {
+           businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
+            console.log("rating", item.rating);
             for (var i = 0; i < 5; i += 1) {
-              if (i < item.rating) {
+              if (i < Math.floor(item.rating)) {
                 $reviews.append($('<i class="icon-star"></i>'));
+              } else if (i < first.rating) {
+                $reviews.append(
+                  $('<div class="icon-star-half-colored"/>').append(
+                    $('<i class="icon-star-half"></i>'),
+                    $('<i class="icon-star-half-empty"></i>')
+                  )
+                );
               } else {
                 $reviews.append($('<i class="icon-star-empty"></i>'));
               }
@@ -257,7 +272,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 $('<div class="result-info"/>').append(
                   $('<p class="result-title"/>').text(item.name),
                   $reviews,
-                  $('<span class="result-reviews"/>').text(first.review_count + " reviews")
+                  $('<span class="result-reviews"/>').text(item.review_count + " reviews")
                 )
               )
             );

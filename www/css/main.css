@@ -282,7 +282,7 @@ a {
 .result-item {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 90%;
-  margin-bottom: 1px;
+  margin-top: 1px;
   line-height: 1.2;
   color: #444;
   background-color: #eee;
@@ -296,7 +296,7 @@ a {
 .result-header {
   position: relative;
   font-family: Helvetica, Arial, sans-serif;
-  height: 300px;
+  height: 200px;
   background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -371,12 +371,23 @@ a {
   background-position: top left;
 }
 
-.icon-star {
+.icon-star,
+.icon-star-half {
   color: #e3cf7a;
 }
 
-.icon-star-empty {
+.icon-star-empty,
+.icon-star-half-empty {
   color: #999;
+}
+
+.icon-star-half-colored {
+  position: relative;
+}
+
+.icon-star-half {
+  position: absolute;
+  top: 0;
 }
 
 .result-tweet {
