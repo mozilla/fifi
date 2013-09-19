@@ -187,21 +187,23 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         case 'amazon.com':
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
           var product = data.result && data.result.length;
+          var first, $first;
 
           if (product) {
-            data.result.every(function (item, index) {
+            data.result.slice(0, 5).forEach(function (item) {
               if (item.detailpageurl && item.itemattributes) {
-              content.append(
-                $('<div class="result-item"/>').append(
-                  $('<a class="result-title"/>').attr('href', item.detailpageurl[0]).text(item.itemattributes[0].title[0]),
-                  $('<p class="result-snippet"/>').html((item.itemattributes[0].feature)? item.itemattributes[0].feature[0] : '')
+                content.append(
+                  $('<div class="result-item"/>').data({ url : item.detailpageurl[0] }).append(
+                    $('<div class="result-image-wrapper"/>').append(
+                      $('<img class="result-image"/>').attr('src', (item.mediumimage[0].url[0] || ''))
+                    ),
+                    $('<div class="result-info"/>').append(
+                      $('<p class="result-title"/>').text(item.itemattributes[0].title[0]),
+                      $('<p class="result-price"/>').text((item.itemattributes[0].listprice) ? item.itemattributes[0].listprice[0].formattedprice[0] : ''),
+                      $('<p class="result-snippet"/>').html((item.itemattributes[0].feature) ? item.itemattributes[0].feature[0] : '')
+                    )
                   )
                 );
-              }
-              if (index > 4) {
-                return false;
-              } else {
-                return true;
               }
             });
           }
@@ -215,7 +217,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           if (businesses) {
             first = businesses.pop();
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.image_url || '').replace(/ms.jpg$/, "l.jpg") + ')' }).appendTo(content);
-            $reviews = $('<div class="result-reviews"/>');
+            $reviews = $('<div class="result-header-reviews"/>');
             for (var i = 0; i < 5; i += 1) {
               if (i < first.rating) {
                 $reviews.append($('<i class="icon-star"></i>'));
@@ -228,12 +230,12 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $first.append(
               $('<div class="result-header-info"/>').append(
                 $('<p class="result-title"/>').text(first.name),
-                $('<p class="result-address"/>').text(first.location.address.pop()),
-                $('<a class="result-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
+                $('<p class="result-header-address"/>').text(first.location.address.pop()),
+                $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
               )
             );
-           businesses.every(function (item, index) {
+           businesses.slice(0, 5).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
             for (var i = 0; i < 5; i += 1) {
               if (i < item.rating) {
@@ -252,11 +254,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 )
               )
             );
-            if (index > 4) {
-              return false;
-            } else {
-              return true;
-            }
             });
           }
           break;

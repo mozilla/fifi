@@ -311,12 +311,14 @@ a {
 
 .result-header-address,
 .result-header-reviews,
-.result-header-phone {
+.result-header-phone,
+.result-snippet {
   font-size: 90%;
 }
 
 .result-reviews,
-.result-header-reviews {
+.result-header-reviews,
+.result-snippet {
   color: #999;
 }
 
@@ -327,7 +329,7 @@ a {
 
 .result-info {
   line-height: 1.6;
-  padding: 15px 5px 15px 20px;
+  padding: 15px 5px 15px 10px;
   overflow: hidden;
   height: 100px;
   width: 215px;
@@ -335,11 +337,17 @@ a {
   display: inline-block;
 }
 
-.result-image {
+.result-image-wrapper {
   display: inline-block;
-  max-width: 100px;
+  text-align: center;
   width: 100px;
   height: 100px;
+  background-color: #fff;
+}
+
+.result-image {
+  max-width: 100px;
+  max-height: 100px;
 }
 
 .result-title {
@@ -348,14 +356,8 @@ a {
   white-space: nowrap;
 }
 
-.result-url {
-  color: #00802A;
-  display: block;
-}
-
 .result-snippet {
-  font-size: 90%;
-  color: #444;
+  white-space: nowrap;
 }
 
 .icon {
