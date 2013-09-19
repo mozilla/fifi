@@ -264,6 +264,7 @@ a {
 #details-list li {
   width: 315px;
   margin-left: 5px;
+  margin-bottom: 5px;
   float: left;
   background-color: #fff;
 }
@@ -285,8 +286,11 @@ a {
   line-height: 1.2;
   color: #444;
   background-color: #eee;
-  height: 100px;
   overflow: hidden;
+}
+
+.result-item-fixed-height {
+  height: 100px;
 }
 
 .result-header {
@@ -373,6 +377,33 @@ a {
 
 .icon-star-empty {
   color: #999;
+}
+
+.result-tweet {
+  padding: 5px;
+}
+
+.result-tweet-user-info {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.result-tweet-user-name {
+  font-weight: bold;
+}
+
+.result-tweet-user-name,
+.result-tweet-user-screen-name {
+  line-height: 1.4;
+}
+
+.result-tweet-user-screen-name {
+  color: #BEBEBE;
+}
+
+.result-tweet-user-screen-name:before {
+  content: "@";
+  color: #BEBEBE;
 }
 
 .wikipedia {

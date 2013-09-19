@@ -101,6 +101,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       switch (data.engineId) {
         case 'google.com':
           var link = data.result && data.result.items;
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
           var rest = [];
 
           if (link) {
@@ -169,18 +170,19 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 rest.push(item);
               }
             }
-          }
-          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
 
-          rest.forEach(function (item, index, list) {
-            content.append(
-              $('<div class="result-item"/>').append(
-                $('<a class="result-title"/>').html(item.htmlTitle).attr('href', item.link),
-                $('<a class="result-url"/>').text(item.formattedUrl),
-                $('<p class="result-snippet"/>').html(item.htmlSnippet)
+            rest.forEach(function (item, index, list) {
+              content.append(
+                $('<div class="result-item result-item-fixed-height"/>').append(
+                  $('<a class="result-title"/>').html(item.htmlTitle).attr('href', item.link),
+                  $('<a class="result-url"/>').text(item.formattedUrl),
+                  $('<p class="result-snippet"/>').html(item.htmlSnippet)
+                  )
                 )
-              )
-          });
+            });
+          } else {
+            content.parent().remove();
+          }
 
           break;
 
@@ -190,22 +192,25 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           var first, $first;
 
           if (product) {
-            data.result.slice(0, 5).forEach(function (item) {
-              if (item.detailpageurl && item.itemattributes) {
+            data.result.slice(0, Math.min(5, data.result.length)).forEach(function (item) {
+              var attrs = item.itemattributes[0];
+              if (item.detailpageurl && attrs) {
                 content.append(
-                  $('<div class="result-item"/>').data({ url : item.detailpageurl[0] }).append(
+                  $('<div class="result-item result-item-fixed-height"/>').data({ url : item.detailpageurl[0] }).append(
                     $('<div class="result-image-wrapper"/>').append(
-                      $('<img class="result-image"/>').attr('src', (item.mediumimage[0].url[0] || ''))
+                      $('<img class="result-image"/>').attr('src', ((item.mediumimage) ? item.mediumimage[0].url[0] : ''))
                     ),
                     $('<div class="result-info"/>').append(
-                      $('<p class="result-title"/>').text(item.itemattributes[0].title[0]),
-                      $('<p class="result-price"/>').text((item.itemattributes[0].listprice) ? item.itemattributes[0].listprice[0].formattedprice[0] : ''),
-                      $('<p class="result-snippet"/>').html((item.itemattributes[0].feature) ? item.itemattributes[0].feature[0] : '')
+                      $('<p class="result-title"/>').text(attrs.title[0]),
+                      $('<p class="result-price"/>').text((attrs.listprice && attrs.listprice[0].formattedprice) ? attrs.listprice[0].formattedprice[0] : ''),
+                      $('<p class="result-snippet"/>').html((attrs.feature) ? attrs.feature[0] : '')
                     )
                   )
                 );
               }
             });
+          } else {
+            content.parent().remove();
           }
           break;
 
@@ -235,7 +240,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
               )
             );
-           businesses.slice(0, 5).forEach(function (item) {
+           businesses.slice(0, Math.min(5, businesses.length)).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
             for (var i = 0; i < 5; i += 1) {
               if (i < item.rating) {
@@ -245,8 +250,10 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
               }
             }
             content.append(
-              $('<div class="result-item cf"/>').append(
-                $('<img class="result-image"/>').attr('src', (item.image_url || '')),
+              $('<div class="result-item result-item-fixed-height cf"/>').append(
+                $('<div class="result-image-wrapper"/>').append(
+                  $('<img class="result-image"/>').attr('src', (item.image_url || ''))
+                ),
                 $('<div class="result-info"/>').append(
                   $('<p class="result-title"/>').text(item.name),
                   $reviews,
@@ -255,6 +262,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
               )
             );
             });
+          } else {
+            content.parent().remove();
           }
           break;
 
@@ -267,10 +276,26 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           break;
 
         case 'twitter.com':
-          var tweet = data.result;
+          var tweets = data.result;
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
 
-          if (tweet) {
-            console.log('got tweet ', tweet);
+          if (tweets) {
+            // https://twitter.com/logo#twitter-content
+            tweets.statuses.slice(0, Math.min(5, tweets.statuses.length)).forEach(function (item) {
+              content.append(
+                $('<div class="result-item cf"/>').append(
+                  $('<div class="result-tweet"/>').append(
+                    $('<div class="result-tweet-user-info"/>').append(
+                      $('<span class="result-tweet-user-name"/>').text(item.user.name + " "),
+                      $('<span class="result-tweet-user-screen-name"/>').text(item.user.screen_name)
+                    ),
+                    $('<p class="result-tweet-text"/>').html(item.text)
+                  )
+                )
+              );
+            });
+          } else {
+            content.parent().remove();
           }
           break;
 
