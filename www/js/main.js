@@ -249,7 +249,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             );
            businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
-            console.log("rating", item.rating);
             for (var i = 0; i < 5; i += 1) {
               if (i < Math.floor(item.rating)) {
                 $reviews.append($('<i class="icon-star"></i>'));
