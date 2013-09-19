@@ -309,26 +309,37 @@ a {
   line-height: 1.3;
 }
 
-.result-reviews {
+.result-header-address,
+.result-header-reviews,
+.result-header-phone {
+  font-size: 90%;
+}
+
+.result-reviews,
+.result-header-reviews {
   color: #999;
 }
 
-.result-phone {
+.result-header-phone {
   color: #444;
   text-decoration: none;
 }
 
 .result-info {
   line-height: 1.6;
-  padding: 15px 0;
+  padding: 15px 5px 15px 20px;
+  overflow: hidden;
+  height: 100px;
+  width: 215px;
+  vertical-align: top;
+  display: inline-block;
 }
 
 .result-image {
-  float: left;
+  display: inline-block;
   max-width: 100px;
   width: 100px;
   height: 100px;
-  margin-right: 20px;
 }
 
 .result-title {
