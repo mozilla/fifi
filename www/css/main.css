@@ -74,7 +74,7 @@ a {
   left: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: top center;
+  background-position: center top;
   background-clip: border-box;
   background-attachment: fixed;
   z-index: -1;
