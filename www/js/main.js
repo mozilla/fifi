@@ -291,13 +291,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             }
             return true;
           });
-          console.log("businesses", businesses);
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
           var first, $first, $reviews;
 
           if (businesses) {
             first = businesses.pop();
-            console.log("FIRST", first);
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.venue.photos.groups[0].items[0].prefix + "320x320" + first.venue.photos.groups[0].items[0].suffix || '') + ')' }).appendTo(content);
             $reviews = $('<div class="result-header-reviews"/>');
             var rating = first.venue.rating / 2;
