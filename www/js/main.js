@@ -345,11 +345,9 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   });
 
   wrapper.find('#fifi-find').one('focus', function () {
-    wrapper.find('#fifi-find-box')
-           .addClass('fifi-find-box-focused')
-           .find('#geolocation-box')
-           .addClass('geolocation-box-focused');
-    wrapper.addClass('fifi-find-box-focused');
+    wrapper.addClass('fifi-find-box-focused')
+           .find('#fifi-find-box')
+           .addClass('fifi-find-box-focused');
     geo.startWatchingPosition(wrapper.find('#geolocation-name'));
   });
 

@@ -64,6 +64,7 @@ a {
   position: relative;
   width: 100%;
   z-index: 1;
+  background-color: #eee;
 }
 
 #wrapper:before {
@@ -82,9 +83,9 @@ a {
 }
 
 #wrapper.fifi-find-box-focused:before {
-  -webkit-filter: blur(4px) grayscale(.75) brightness(25%);
-     -moz-filter: blur(4px) grayscale(.75) brightness(25%);
-          filter: blur(4px) grayscale(.75) brightness(25%);
+  -webkit-filter: grayscale(1);
+     -moz-filter: grayscale(1);
+          filter: grayscale(1);
 
   -webkit-transition: all .5s ease;
      -moz-transition: all .5s ease;
@@ -94,9 +95,9 @@ a {
      -moz-transition-delay: 1s;
           transition-delay: 1s;
 
-  -webkit-transform: scale(5) translateZ(0);
-     -moz-transform: scale(5) translateZ(0);
-          transform: scale(5) translateZ(0);
+  -webkit-transform: translateZ(0);
+     -moz-transform: translateZ(0);
+          transform: translateZ(0);
 }
 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
@@ -106,7 +107,6 @@ a {
   }
   #fifi-find-box {
     top: 492px; /* 1024 / 2 = 512 - (40px / 2 = 20) = 492 */
-    left: 194px; /* 768 / 2 = 384 - (380 / 2 = 190) = 194 */
   }
   .suggestions,
   .suggestions-secondary {
@@ -124,12 +124,13 @@ a {
   }
   #fifi-find-box {
     top: 364px; /* 768 / 2 = 384 - (40px / 2 = 20) = 364 */
-    left: 322px; /* 1024 / 2 = 512 - (380 / 2 = 190) = 322 */
   }
 }
 
 #fifi-find-box {
   position: absolute;
+  width: 100%;
+  text-align: center;
   top: 40%;
   transition: top 0.5s, left 0.5s;
   -webkit-transition: top 0.5s, left 0.5s;
@@ -137,22 +138,28 @@ a {
 
 #fifi-find-box.fifi-find-box-focused {
   top: 5px;
-  left: 20px;
-  height: 40px;
-  width: auto;
 }
 
 #fifi-find {
-  font-size: 18px;
-  height: 32px;
-  padding: 0 5px;
-  width: 380px;
+  font-size: 24px;
+  height: 40px;
+  padding-left: 10px;
+  width: 350px;
   color: #555;
   background-color: rgba(255,255,255,0.9);
-  border: none;
+  border: 1px solid #ddd;
+  border-right: none;
   margin: 0;
+  border-radius: 2px 0 0 2px;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+
+#fifi-find::-webkit-input-placeholder {
+  font-family: FontAwesome;
+}
+#fifi-find::-moz-placeholder {
+  font-family: FontAwesome;
 }
 
 #fifi-find:focus {
@@ -160,60 +167,50 @@ a {
   outline: 0px none;
 }
 
-#geolocation-box {
-  width: 380px;
-  vertical-align: top;
-  text-align: right;
-  display: block;
-}
-
-#geolocation-box.geolocation-box-focused {
-  width: auto;
-  text-align: left;
-  display: inline-block;
-}
-
 #geolocation {
   font-size: 14px;
-  line-height: 32px;
-  color: #888;
+  line-height: 40px;
+  height: 40px;
+  color: #999;
   vertical-align: top;
   cursor: pointer;
   background-color: inherit;
   border: none;
   white-space: nowrap;
   padding: 0 10px;
+  border-radius: 0 2px 2px 0;
+  border: 1px solid #ddd;
+  border-left: none;
   background-color: rgba(255,255,255,0.9);
   margin: 0;
+  max-width: 200px;
+  overflow: hidden;
+  display: inline-block;
 }
+
 #geolocation:active {
   color: #444;
 }
 
 #suggestions,
 #details {
-  padding-top: 46px;
-}
-
-#details {
   margin: 0 20px;
-}
-
-#search h1 {
-  font-size: 80px;
-  letter-spacing: -2px;
-  text-align: center;
-  text-transform: uppercase;
+  padding-top: 54px;
 }
 
 .fifi-suggest {
+  text-align: center;
+  width: 100%;
 }
 
 .suggestions,
 .suggestions-secondary {
   background-color: #fff;
-  float: left;
   margin-left: 5px;
+  width: 320px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
 }
 
 .suggestions-secondary .secondary.term span {
@@ -271,6 +268,7 @@ a {
 
 #definition-text {
   max-height: 300px;
+  padding: 5px;
   overflow: hidden;
   margin-bottom: 10px;
 }
