@@ -284,13 +284,15 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         case 'foursquare.com':
           var groups = data.result && data.result.groups;
           var businesses;
-          groups.every(function (group) {
-            if (group.name === "recommended") {
-              businesses = group.items;
-              return false;
-            }
-            return true;
-          });
+          if (groups) {
+            groups.every(function (group) {
+              if (group.name === "recommended") {
+                businesses = group.items;
+                return false;
+              }
+              return true;
+            });
+          }
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
           var first, $first, $reviews;
 
