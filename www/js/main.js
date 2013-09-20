@@ -322,7 +322,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 $('<p class="result-title"/>').text(first.venue.name),
                 $('<p class="result-header-address"/>').text(first.venue.location.address),
                 $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.venue.contact.phone }).text(first.venue.contact.formattedPhone),
-                $reviews.append($('<span/>').text(first.venue.likes.count + " likes"))
+                $reviews.append($('<span/>').text(first.venue.likes.count + " likes")),
+                $('<i class="icon-foursquare"></i>')
               )
             );
            businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {

@@ -388,6 +388,13 @@ a {
   top: 0;
 }
 
+.icon-foursquare {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 22px;
+}
+
 .result-tweet {
   padding: 5px;
 }
