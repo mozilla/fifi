@@ -281,6 +281,85 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           }
           break;
 
+        case 'foursquare.com':
+          var groups = data.result && data.result.groups;
+          var businesses;
+          groups.every(function (group) {
+            if (group.name === "recommended") {
+              businesses = group.items;
+              return false;
+            }
+            return true;
+          });
+          console.log("businesses", businesses);
+          var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
+          var first, $first, $reviews;
+
+          if (businesses) {
+            first = businesses.pop();
+            console.log("FIRST", first);
+            $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.venue.photos.groups[0].items[0].prefix + "320x320" + first.venue.photos.groups[0].items[0].suffix || '') + ')' }).appendTo(content);
+            $reviews = $('<div class="result-header-reviews"/>');
+            var rating = first.venue.rating / 2;
+            for (var i = 0; i < 5; i += 1) {
+              if (i < Math.floor(rating)) {
+                $reviews.append($('<i class="icon-star"></i>'));
+              } else if (i < rating) {
+                $reviews.append(
+                  $('<div class="icon-star-half-colored"/>').append(
+                    $('<i class="icon-star-half"></i>'),
+                    $('<i class="icon-star-half-empty"></i>')
+                  )
+                );
+              } else {
+                $reviews.append($('<i class="icon-star-empty"></i>'));
+              }
+            }
+            // need a bit of space between stars and # of reviews
+            $reviews.append(" ");
+            $first.append(
+              $('<div class="result-header-info"/>').append(
+                $('<p class="result-title"/>').text(first.venue.name),
+                $('<p class="result-header-address"/>').text(first.venue.location.address),
+                $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.venue.contact.phone }).text(first.venue.contact.formattedPhone),
+                $reviews.append($('<span/>').text(first.venue.likes.count + " likes"))
+              )
+            );
+           businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {
+            var $reviews = $('<div class="result-reviews"/>');
+            var rating = item.venue.rating / 2;
+            for (var i = 0; i < 5; i += 1) {
+              if (i < Math.floor(rating)) {
+                $reviews.append($('<i class="icon-star"></i>'));
+              } else if (i < rating) {
+                $reviews.append(
+                  $('<div class="icon-star-half-colored"/>').append(
+                    $('<i class="icon-star-half"></i>'),
+                    $('<i class="icon-star-half-empty"></i>')
+                  )
+                );
+              } else {
+                $reviews.append($('<i class="icon-star-empty"></i>'));
+              }
+            }
+            content.append(
+              $('<div class="result-item result-item-fixed-height cf"/>').append(
+                $('<div class="result-image-wrapper"/>').append(
+                  $('<img class="result-image"/>').attr('src', (item.venue.photos.groups[0].items[0].prefix + "100x100" + item.venue.photos.groups[0].items[0].suffix || ''))
+                ),
+                $('<div class="result-info"/>').append(
+                  $('<p class="result-title"/>').text(item.venue.name),
+                  $reviews,
+                  $('<span class="result-reviews"/>').text(item.venue.likes.count + " likes")
+                )
+              )
+            );
+            });
+          } else {
+            content.parent().remove();
+          }
+          break;
+
         case 'en.wikipedia.org':
           var article = data.result;
 

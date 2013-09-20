@@ -27,6 +27,10 @@ define(['./utils'], function (utils) {
         'twitter.com': {
           conceptsPrimary: [],
           conceptsSecondary: []
+        },
+        'foursquare.com': {
+          conceptsPrimary: [],
+          conceptsSecondary: []
         }
       };
     };
