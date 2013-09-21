@@ -5,6 +5,7 @@ requirejs.config({
     'nunjucks': 'lib/nunjucks',
     'socket.io': 'lib/socket.io',
     'async': 'lib/async',
+    'moment': 'lib/moment',
     'debounce': 'lib/debounce'
   },
   shim: {

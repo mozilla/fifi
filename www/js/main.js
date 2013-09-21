@@ -1,6 +1,6 @@
 define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
-  'base/geo', 'settings', 'nunjucks', 'templates'],
-  function ($, io, find, Autoset, utils, geo, settings, nunjucks, templates) {
+  'base/geo', 'settings', 'nunjucks', 'templates', 'moment'],
+  function ($, io, find, Autoset, utils, geo, settings, nunjucks, templates, moment) {
   'use strict';
 
   var wrapper = $('#wrapper');
@@ -375,7 +375,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
           if (tweets) {
             // https://twitter.com/logo#twitter-content
-            tweets.statuses.slice(0, Math.min(5, tweets.statuses.length)).forEach(function (item) {
+            tweets.statuses.slice(0, Math.min(3, tweets.statuses.length)).forEach(function (item) {
               content.append(
                 $('<div class="result-item cf"/>').append(
                   $('<div class="result-tweet"/>').append(
@@ -383,7 +383,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                       $('<span class="result-tweet-user-name"/>').text(item.user.name + " "),
                       $('<span class="result-tweet-user-screen-name"/>').text(item.user.screen_name)
                     ),
-                    $('<p class="result-tweet-text"/>').html(item.text)
+                    $('<p class="result-tweet-text"/>').html(item.text),
+                    $('<div class="result-tweet-meta"/>').append(
+                      $('<p class="result-tweet-time-ago"/>').text(moment(item.created_at).fromNow()),
+                      $('<i class="icon-twitter"></i>')
+                    )
                   )
                 )
               );

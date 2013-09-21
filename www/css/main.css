@@ -253,13 +253,13 @@ a {
 }
 
 #definition {
-  width: 315px;
-  margin-right: 15px;
+  width: 320px;
+  margin-right: 5px;
   background-color: #fff;
 }
 
 #details-list li {
-  width: 315px;
+  width: 320px;
   margin-left: 5px;
   margin-bottom: 5px;
   float: left;
@@ -275,6 +275,10 @@ a {
 
 #definition-links li {
   margin: 5px 0;
+}
+
+.result-item:first-child {
+  margin-top: 0px;
 }
 
 .result-item {
@@ -396,16 +400,13 @@ a {
 }
 
 .result-tweet {
-  padding: 5px;
+  padding: 20px;
 }
 
 .result-tweet-user-info {
   display: inline-block;
   vertical-align: top;
-}
-
-.result-tweet-user-name {
-  font-weight: bold;
+  font-size: 110%;
 }
 
 .result-tweet-user-name,
@@ -420,6 +421,20 @@ a {
 .result-tweet-user-screen-name:before {
   content: "@";
   color: #BEBEBE;
+}
+
+.result-tweet-text {
+  margin: 10px 0;
+}
+
+.result-tweet-time-ago {
+  color: #BEBEBE;
+  display: inline-block;
+}
+
+.icon-twitter {
+  color: #BEBEBE;
+  float: right;
 }
 
 .wikipedia {
