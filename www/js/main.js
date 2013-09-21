@@ -192,7 +192,16 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           var first, $first;
 
           if (product) {
-            data.result.slice(0, Math.min(5, data.result.length)).forEach(function (item) {
+            first = data.result.pop();
+            $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + ((first.mediumimage) ? first.mediumimage[0].url[0] : '') + ')' }).appendTo(content);
+            $first.append(
+              $('<div class="result-header-info"/>').append(
+                $('<p class="result-title"/>').text(first.itemattributes[0].title[0]),
+                $('<p class="result-price"/>').text((first.itemattributes[0].listprice && first.itemattributes[0].listprice[0].formattedprice) ? first.itemattributes[0].listprice[0].formattedprice[0] : ''),
+                $('<p class="result-snippet"/>').html((first.itemattributes[0].feature) ? first.itemattributes[0].feature[0] : '')
+              )
+            );
+            data.result.slice(0, Math.min(3, data.result.length)).forEach(function (item) {
               var attrs = item.itemattributes[0];
               if (item.detailpageurl && attrs) {
                 content.append(
@@ -202,8 +211,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                     ),
                     $('<div class="result-info"/>').append(
                       $('<p class="result-title"/>').text(attrs.title[0]),
-                      $('<p class="result-price"/>').text((attrs.listprice && attrs.listprice[0].formattedprice) ? attrs.listprice[0].formattedprice[0] : ''),
-                      $('<p class="result-snippet"/>').html((attrs.feature) ? attrs.feature[0] : '')
+                      $('<p class="result-price"/>').text((attrs.listprice && attrs.listprice[0].formattedprice) ? attrs.listprice[0].formattedprice[0] : '')
                     )
                   )
                 );
