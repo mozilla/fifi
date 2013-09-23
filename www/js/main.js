@@ -9,7 +9,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
   var inResults = false;
   var socketUrl = settings.SOCKET_URL;
   var socket = io.connect(socketUrl);
-  var lastEngine;
   var lastTerm;
 
   var autoset = new Autoset();
@@ -84,8 +83,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   socket.on('api/queryDone', function (data) {
     console.log('GOT api/queryDone: ', data);
-
-    var engine = autoset.engines[lastEngine];
 
     nunjucks.render('result.html', {
       engineId: data.engineId
@@ -436,6 +433,12 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     }
   });
 
+  find.on('keydown', function (ev) {
+    if (ev.which === 13) {
+      goSearch(find.val().toString());
+    }
+  });
+
   wrapper.find('#fifi-find').one('focus', function () {
     wrapper.addClass('fifi-find-box-focused')
            .find('#fifi-find-box')
@@ -508,31 +511,34 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     });
   });
 
+  function goSearch(term) {
+    wrapper.find('#suggestions').hide();
+    // save the current terms
+    lastTerm = wrapper.find('#fifi-find').val();
+    // set suggested terms as current
+    wrapper.find('#fifi-find').val(term);
+
+    for (var engine in autoset.engines) {
+      socket.emit('api/query', {
+        'term': term,
+        location: geo.getLastLocation(),
+        geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
+        engineId: engine
+      });
+    }
+
+    nunjucks.render('details.html', { 'term': term }, function (err, res) {
+      inResults = true;
+      wrapper.find('#details').html(res).show();
+    });
+  }
+
   wrapper.on('touchstart click', function (ev) {
     var self = $(ev.target);
 
     switch (self.data('action')) {
       case 'concept':
-        wrapper.find('#suggestions').hide();
-        lastEngine = self.data('engine');
-        // save the current terms
-        lastTerm = wrapper.find('#fifi-find').val();
-        // set suggested terms as current
-        wrapper.find('#fifi-find').val(self.data('term'));
-
-        for (var engine in autoset.engines) {
-          socket.emit('api/query', {
-            term: self.data('term'),
-            location: geo.getLastLocation(),
-            geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
-            engineId: engine
-          });
-        }
-
-        nunjucks.render('details.html', { term: self.data('term') }, function (err, res) {
-          inResults = true;
-          wrapper.find('#details').html(res).show();
-        });
+        goSearch(self.data('term'))
         break;
 
       case 'back':
