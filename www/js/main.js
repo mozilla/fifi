@@ -87,6 +87,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
     nunjucks.render('result.html', {
       engineId: data.engineId
     }, function (err, res) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
       // ignore the wikipedia entry for now
       if (data.engineId !== 'en.wikipedia.org') {
         wrapper.find('#details-list').append(res);
@@ -334,6 +339,10 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
            businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
             var rating = item.venue.rating / 2;
+            var src = '';
+            if (item.venue.photos && item.venue.photos.groups[0] && item.venue.photos.groups[0].items[0]) {
+              src = (item.venue.photos.groups[0].items[0].prefix + "100x100" + item.venue.photos.groups[0].items[0].suffix);
+            }
             for (var i = 0; i < 5; i += 1) {
               if (i < Math.floor(rating)) {
                 $reviews.append($('<i class="icon-star"></i>'));
@@ -351,7 +360,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             content.append(
               $('<div class="result-item result-item-fixed-height cf"/>').append(
                 $('<div class="result-image-wrapper"/>').append(
-                  $('<img class="result-image"/>').attr('src', (item.venue.photos.groups[0].items[0].prefix + "100x100" + item.venue.photos.groups[0].items[0].suffix || ''))
+                  $('<img class="result-image"/>').attr('src', src)
                 ),
                 $('<div class="result-info"/>').append(
                   $('<p class="result-title"/>').text(item.venue.name),
