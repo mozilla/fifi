@@ -194,7 +194,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           var first, $first;
 
           if (product) {
-            first = data.result.pop();
+            first = data.result.shift();
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + ((first.mediumimage) ? first.mediumimage[0].url[0] : '') + ')' }).appendTo(content);
             $first.append(
               $('<div class="result-header-info"/>').append(
@@ -230,7 +230,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           var first, $first, $reviews;
 
           if (businesses) {
-            first = businesses.pop();
+            first = businesses.shift();
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.image_url || '').replace(/ms.jpg$/, "l.jpg") + ')' }).appendTo(content);
             $reviews = $('<div class="result-header-reviews"/>');
             for (var i = 0; i < 5; i += 1) {
@@ -252,7 +252,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $first.append(
               $('<div class="result-header-info"/>').append(
                 $('<p class="result-title"/>').text(first.name),
-                $('<p class="result-header-address"/>').text(first.location.address.pop()),
+                $('<p class="result-header-address"/>').text(first.location.address.shift()),
                 $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
               )
@@ -307,7 +307,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           var first, $first, $reviews;
 
           if (businesses) {
-            first = businesses.pop();
+            first = businesses.shift();
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.venue.photos.groups[0].items[0].prefix + "320x320" + first.venue.photos.groups[0].items[0].suffix || '') + ')' }).appendTo(content);
             $reviews = $('<div class="result-header-reviews"/>');
             var rating = first.venue.rating / 2;
