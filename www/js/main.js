@@ -198,9 +198,9 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + ((first.mediumimage) ? first.mediumimage[0].url[0] : '') + ')' }).appendTo(content);
             $first.append(
               $('<div class="result-header-info"/>').append(
-                $('<p class="result-title"/>').text(first.itemattributes[0].title[0]),
-                $('<p class="result-price"/>').text((first.itemattributes[0].listprice && first.itemattributes[0].listprice[0].formattedprice) ? first.itemattributes[0].listprice[0].formattedprice[0] : ''),
-                $('<p class="result-snippet"/>').html((first.itemattributes[0].feature) ? first.itemattributes[0].feature[0] : '')
+                $('<p class="result-header-title"/>').text(first.itemattributes[0].title[0]),
+                $('<p class="result-header-price"/>').text((first.itemattributes[0].listprice && first.itemattributes[0].listprice[0].formattedprice) ? first.itemattributes[0].listprice[0].formattedprice[0] : ''),
+                $('<p class="result-header-snippet"/>').html((first.itemattributes[0].feature) ? first.itemattributes[0].feature[0] : '')
               )
             );
             data.result.slice(0, Math.min(3, data.result.length)).forEach(function (item) {
@@ -251,7 +251,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $reviews.append(" ");
             $first.append(
               $('<div class="result-header-info"/>').append(
-                $('<p class="result-title"/>').text(first.name),
+                $('<p class="result-header-title"/>').text(first.name),
                 $('<p class="result-header-address"/>').text(first.location.address.shift()),
                 $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
@@ -329,7 +329,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             $reviews.append(" ");
             $first.append(
               $('<div class="result-header-info"/>').append(
-                $('<p class="result-title"/>').text(first.venue.name),
+                $('<p class="result-header-title"/>').text(first.venue.name),
                 $('<p class="result-header-address"/>').text(first.venue.location.address),
                 $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.venue.contact.phone }).text(first.venue.contact.formattedPhone),
                 $reviews.append($('<span/>').text(first.venue.likes.count + " likes")),
