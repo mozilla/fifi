@@ -153,6 +153,8 @@ a {
   border-radius: 2px 0 0 2px;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
 }
 
 #fifi-find::-webkit-input-placeholder {
@@ -186,6 +188,8 @@ a {
   max-width: 200px;
   overflow: hidden;
   display: inline-block;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
 }
 
 #geolocation:active {
