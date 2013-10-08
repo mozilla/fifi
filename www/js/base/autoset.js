@@ -12,6 +12,10 @@ define(['./utils'], function (utils) {
           conceptsPrimary: [],
           conceptsSecondary: []
         },
+        'bing.com': {
+          conceptsPrimary: [],
+          conceptsSecondary: []
+        },
         'amazon.com': {
           conceptsPrimary: [],
           conceptsSecondary: []

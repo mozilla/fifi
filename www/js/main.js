@@ -168,6 +168,13 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 //     $('<a/>').text(item.title).attr('href', item.link)
                 //     )
                 //   );
+              } else if ('bing.com' === item.displayLink) {
+                // Bing results
+                defList.append(
+                  $('<li class="bing icon"/>').append(
+                    $('<a/>').text(item.title.replace('- Bing', '')).attr('href', item.link)
+                    )
+                  );
               } else {
                 rest.push(item);
               }
@@ -390,6 +397,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           }
           break;
 
+        case 'bing.com':
+          console.log('got bing results! ', data)
+          var results = data;
+          break;
+
         default:
           break;
       };
@@ -508,7 +520,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
     for (var engine in autoset.engines) {
       socket.emit('api/query', {
-        'term': term,
+        term: term,
         location: geo.getLastLocation(),
         geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
         engineId: engine
