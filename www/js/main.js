@@ -250,10 +250,11 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             // need a bit of space between stars and # of reviews
             $reviews.append(" ");
             $first.append(
+              $('<span class="search-brand-icon"/>').append("Yelp ", $('<img class="search-brand-image image-yelp" src="images/yelp.com-16x16.png"/>')),
               $('<div class="result-header-info"/>').append(
                 $('<p class="result-header-title"/>').text(first.name),
                 $('<p class="result-header-address"/>').text(first.location.address.shift()),
-                $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.phone }).text(first.display_phone),
+                $('<p class="result-header-phone"/>').text(first.display_phone),
                 $reviews.append($('<span/>').text(first.review_count + " reviews"))
               )
             );
@@ -310,53 +311,31 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
             first = businesses.shift();
             $first = $('<div class="result-header cf"/>').css({ 'background-image' : 'url(' + (first.venue.photos.groups[0].items[0].prefix + "320x320" + first.venue.photos.groups[0].items[0].suffix || '') + ')' }).appendTo(content);
             $reviews = $('<div class="result-header-reviews"/>');
-            var rating = first.venue.rating / 2;
-            for (var i = 0; i < 5; i += 1) {
-              if (i < Math.floor(rating)) {
-                $reviews.append($('<i class="icon-star"></i>'));
-              } else if (i < rating) {
-                $reviews.append(
-                  $('<div class="icon-star-half-colored"/>').append(
-                    $('<i class="icon-star-half"></i>'),
-                    $('<i class="icon-star-half-empty"></i>')
-                  )
-                );
-              } else {
-                $reviews.append($('<i class="icon-star-empty"></i>'));
-              }
-            }
+            $reviews = $('<div class="result-header-reviews"/>');
+            $reviews.append($("<span class='venue-rating'/>").text((first.venue.rating || 0).toPrecision(2)).
+                     toggleClass("venue-rating-positive", first.venue.rating && first.venue.rating > 7).
+                     toggleClass("venue-rating-neutral", first.venue.rating && first.venue.rating <= 7));
             // need a bit of space between stars and # of reviews
             $reviews.append(" ");
             $first.append(
+              $('<span class="search-brand-icon"/>').append("FourSquare ", $('<img class="search-brand-image image-foursquare" src="images/foursquare-16x16.png"/>')),
               $('<div class="result-header-info"/>').append(
                 $('<p class="result-header-title"/>').text(first.venue.name),
                 $('<p class="result-header-address"/>').text(first.venue.location.address),
-                $('<a class="result-header-phone"/>').attr({ 'href' : 'tel:' + first.venue.contact.phone }).text(first.venue.contact.formattedPhone),
-                $reviews.append($('<span/>').text(first.venue.likes.count + " likes")),
-                $('<i class="icon-foursquare"></i>')
+                $('<p class="result-header-phone"/>').text(first.venue.contact.formattedPhone),
+                $reviews.append($('<span/>').text(first.venue.likes.count + " likes"))
               )
             );
            businesses.slice(0, Math.min(3, businesses.length)).forEach(function (item) {
             var $reviews = $('<div class="result-reviews"/>');
-            var rating = item.venue.rating / 2;
             var src = '';
             if (item.venue.photos && item.venue.photos.groups[0] && item.venue.photos.groups[0].items[0]) {
               src = (item.venue.photos.groups[0].items[0].prefix + "100x100" + item.venue.photos.groups[0].items[0].suffix);
             }
-            for (var i = 0; i < 5; i += 1) {
-              if (i < Math.floor(rating)) {
-                $reviews.append($('<i class="icon-star"></i>'));
-              } else if (i < rating) {
-                $reviews.append(
-                  $('<div class="icon-star-half-colored"/>').append(
-                    $('<i class="icon-star-half"></i>'),
-                    $('<i class="icon-star-half-empty"></i>')
-                  )
-                );
-              } else {
-                $reviews.append($('<i class="icon-star-empty"></i>'));
-              }
-            }
+            $reviews = $('<div class="result-header-reviews"/>').
+                     append($("<span class='venue-rating'/>").text((item.venue.rating || 0).toPrecision(2)).
+                     toggleClass("venue-rating-positive", item.venue.rating && item.venue.rating > 7).
+                     toggleClass("venue-rating-neutral", item.venue.rating && item.venue.rating <= 7));
             content.append(
               $('<div class="result-item result-item-fixed-height cf"/>').append(
                 $('<div class="result-image-wrapper"/>').append(

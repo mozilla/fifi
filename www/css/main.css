@@ -403,6 +403,24 @@ a {
   background-position: top left;
 }
 
+.venue-rating {
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.venue-rating-positive {
+  background-color: #69BF13;
+}
+
+.venue-rating-neutral {
+  background-color: #bfbfbf;
+}
+
 .icon-star,
 .icon-star-half {
   color: #e3cf7a;
@@ -422,11 +440,20 @@ a {
   top: 0;
 }
 
-.icon-foursquare {
+.search-brand-icon {
   position: absolute;
-  right: 5px;
-  top: 5px;
-  font-size: 22px;
+  right: 0px;
+  top: 0px;
+  font-size: 12px;
+  padding: 1px 2px;
+  background-color: #fff;
+  border-radius: 0 0 0 2px;
+  color: #666;
+  opacity: 0.75;
+}
+
+.search-brand-image {
+  vertical-align: middle;
 }
 
 .result-tweet {
