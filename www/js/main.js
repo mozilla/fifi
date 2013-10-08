@@ -398,7 +398,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           break;
 
         case 'bing.com':
-          console.log('got bing results! ', data)
           var results = data;
           break;
 
