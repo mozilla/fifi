@@ -83,7 +83,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   socket.on('api/queryDone', function (data) {
     console.log('GOT api/queryDone: ', data);
-
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!! ', data.engineId)
     nunjucks.render('result.html', {
       engineId: data.engineId
     }, function (err, res) {
@@ -101,7 +101,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       var defVideos = wrapper.find('#definition-videos');
 
       switch (data.engineId) {
-        case 'google.com':
+        case 'bing.com':
           var link = data.result && data.result.items;
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
           var rest = [];
@@ -168,13 +168,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
                 //     $('<a/>').text(item.title).attr('href', item.link)
                 //     )
                 //   );
-              } else if ('bing.com' === item.displayLink) {
-                // Bing results
-                defList.append(
-                  $('<li class="bing icon"/>').append(
-                    $('<a/>').text(item.title.replace('- Bing', '')).attr('href', item.link)
-                    )
-                  );
               } else {
                 rest.push(item);
               }
@@ -395,10 +388,6 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
           } else {
             content.parent().remove();
           }
-          break;
-
-        case 'bing.com':
-          var results = data;
           break;
 
         default:

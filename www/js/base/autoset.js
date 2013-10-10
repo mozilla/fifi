@@ -8,10 +8,6 @@ define(['./utils'], function (utils) {
       this.results = {};
       this.terms = null;
       this.engines = {
-        'google.com': {
-          conceptsPrimary: [],
-          conceptsSecondary: []
-        },
         'bing.com': {
           conceptsPrimary: [],
           conceptsSecondary: []
