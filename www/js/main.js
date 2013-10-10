@@ -83,7 +83,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
 
   socket.on('api/queryDone', function (data) {
     console.log('GOT api/queryDone: ', data);
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!! ', data.engineId)
+
     nunjucks.render('result.html', {
       engineId: data.engineId
     }, function (err, res) {
