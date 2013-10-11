@@ -416,6 +416,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       socket.emit('api/find', {
         term: value,
         location: geo.getLastLocation(),
+        search: 'food',
         geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude
       });
     }
@@ -511,7 +512,8 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         term: term,
         location: geo.getLastLocation(),
         geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
-        engineId: engine
+        engineId: engine,
+        search: 'food'
       });
     }
 
