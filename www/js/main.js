@@ -101,6 +101,49 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       var defVideos = wrapper.find('#definition-videos');
 
       switch (data.engineId) {
+        case 'boxfish.com':
+            console.log("hi rory")
+            console.log(data);
+
+            var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
+
+            //parse out the channels that boxfish is returning related to these keywords
+            if(data.result){
+                if(data.result.channels){
+                    data.result.channels.forEach(function (item, index, list) {
+                        content.append(
+                            $('<div class="result-item result-item-fixed-height"/>').append(
+                                $('<a class="result-title"/>').html(item.name),
+                                $('<p class="result-snippet"/>').html(item.number)
+                            )
+                        )
+                    });
+                }
+
+                if(data.result.mentions){
+                    data.result.mentions.forEach(function (item, index, list) {
+                        content.append(
+                            $('<div class="result-item result-item-fixed-height"/>').append(
+                                "<p>Mentioned on ...</p>",
+                                $('<a class="result-title"/>').html(item.program.name),
+                                $('<p class="result-snippet"/>').html(item.text)
+                            )
+                        )
+                    });
+                }
+
+                if(data.result.programs){
+                    data.result.programs.forEach(function (item, index, list) {
+                        content.append(
+                            $('<div class="result-item result-item-fixed-height"/>').append(
+                                $('<a class="result-title"/>').html(item.name),
+                                $('<p class="result-snippet"/>').html(item.description)
+                            )
+                        )
+                    });
+                }
+            }
+            break;
         case 'bing.com':
           var link = data.result && data.result.items;
           var content = wrapper.find('#details-list li[data-engine="' + data.engineId + '"] .content');
@@ -416,7 +459,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
       socket.emit('api/find', {
         term: value,
         location: geo.getLastLocation(),
-        search: 'food',
+        search: 'news',
         geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude
       });
     }
@@ -513,7 +556,7 @@ define(['jquery', 'socket.io', 'base/find', 'base/autoset', 'base/utils',
         location: geo.getLastLocation(),
         geolocation: geo.getLastPosition().coords.latitude + ',' + geo.getLastPosition().coords.longitude,
         engineId: engine,
-        search: 'food'
+        search: 'news'
       });
     }
 

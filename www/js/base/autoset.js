@@ -31,7 +31,11 @@ define(['./utils'], function (utils) {
         'foursquare.com': {
           conceptsPrimary: [],
           conceptsSecondary: []
-        }
+        },
+        'boxfish.com': {
+          conceptsPrimary: [],
+          conceptsSecondary: []
+        },
       };
     };
 
